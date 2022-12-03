@@ -1,0 +1,74 @@
+version: "3.9"
+services:
+  #Zookeeper Service.
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    restart: "no"
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    container_name: mtogoo-zookeeper
+
+  #Kafka Service
+  kafka:
+    image: 'bitnami/kafka:latest'
+    restart: "no"
+    ports:
+      - '9092:9092'
+      - '29092:29092'
+
+    environment:
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=INTERNAL://:29092,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - ALLOW_PLAINTEXT_LISTENER=yes
+
+    container_name: mtogo-kafka-broker
+
+    depends_on:
+      - "zookeeper"
+
+  order_db:
+    container_name: mtogo_order_postgres
+    image: postgres:latest
+    ports:
+      - "5445:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: orders
+  restaurant_db:
+    image: postgres:14.1-alpine
+    restart: always
+    hostname: postgres
+    container_name: mtogo_restaurant_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Qwerty!234
+      - POSTGRES_DB=restaurants
+    ports:
+      - '6969:5432'
+  camunda-db:
+    container_name: mtogo_camunda_postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  courier-db:
+    image: postgres:14.1-alpine
+    restart: always
+    hostname: postgres
+    container_name: mtogo_courier_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Qwerty!234
+      - POSTGRES_DB=courier
+    ports:
+      - '5434:5432'
+
+volumes:
+  zookeeper_data:
+  kafka_data:
