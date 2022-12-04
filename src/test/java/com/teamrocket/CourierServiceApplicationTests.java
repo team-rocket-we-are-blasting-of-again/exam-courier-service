@@ -11,5 +11,5 @@ class CourierServiceApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
+
