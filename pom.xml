@@ -9,13 +9,14 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.teamrocket</groupId>
-    <artifactId>Template</artifactId>
+    <artifactId>courier-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Template</name>
-    <description>Template</description>
+    <name>courier-service</name>
+    <description>manages courier related operations</description>
     <properties>
         <java.version>17</java.version>
         <cucumber.version>7.7.0</cucumber.version>
+        <grpc.version>1.49.2</grpc.version>
     </properties>
 
     <!-- Dependencies -->
@@ -43,12 +44,37 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!--       gRPC       -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-client-spring-boot-starter</artifactId>
+            <version>2.13.1.RELEASE</version>
+        </dependency>
+        <!--       ______       -->
+
+
+        <!--__________________________TEST__________________________-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -90,7 +116,11 @@
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
@@ -104,11 +134,41 @@
             <type>pom</type>
         </dependency>
 
+
     </dependencies>
 
     <!-- Build -->
     <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.1</version>
+            </extension>
+        </extensions>
         <plugins>
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.6.1</version>
+                <configuration>
+                    <protocArtifact>
+                        com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}
+                    </protocArtifact>
+                    <pluginId>grpc-java</pluginId>
+                    <pluginArtifact>
+                        io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
+                    </pluginArtifact>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compile-custom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -139,14 +199,6 @@
                 <artifactId>pitest-maven</artifactId>
                 <version>1.9.6</version>
                 <configuration>
-                    <!--     <targetClasses>
-                             <param>datalayer.employee.*</param>
-                             <param>servicelayer.employee.*</param>
-                         </targetClasses>
-                         <targetTests>
-                             <param>datalayer.employee.*</param>
-                             <param>servicelayer.employee.*</param>
-                         </targetTests> -->
                     <mutators>
                         <mutator>CONSTRUCTOR_CALLS</mutator>
                         <mutator>VOID_METHOD_CALLS</mutator>
@@ -240,7 +292,7 @@
                             <includes>
                                 <include>**/*</include>
                             </includes>
-                            <!--   <groups>com.teamrocket.Template.integration</groups> -->
+                            <!--   <groups>com.teamrocket.integration</groups> -->
                         </configuration>
                         <executions>
                             <execution>
