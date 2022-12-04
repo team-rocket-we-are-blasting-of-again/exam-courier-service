@@ -23,10 +23,7 @@ public class AuthClient {
 
     public int registerCourierUser(Courier courier) {
         LOGGER.info("gRPC Channel {} ", managedChannel.toString());
-        System.out.println("HELLO FROM GRPC");
-        System.out.println("HELLO FROM GRPC");
-        System.out.println("HELLO FROM GRPC");
-        System.out.println("HELLO FROM GRPC");
+
         CreateUserResponse response = userBlockingStub.createUser(CreateUserRequest
                 .newBuilder()
                 .setRole(Role.RESTAURANT)

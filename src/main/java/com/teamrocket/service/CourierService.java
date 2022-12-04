@@ -19,24 +19,7 @@ public class CourierService implements ICourierService {
 
     @Override
     public Courier registerCourier(Courier courier) {
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
-        System.out.println("MAGDA");
         int userId = authClient.registerCourierUser(courier);
-        System.out.println("HANNNA");
-        System.out.println("HANNNA");
-        System.out.println("HANNNA");
-        System.out.println("HANNNA");
-        System.out.println("HANNNA");
-        System.out.println("HANNNA");
         courier.setGetUserId(userId);
         return courierRepository.save(courier);
     }
