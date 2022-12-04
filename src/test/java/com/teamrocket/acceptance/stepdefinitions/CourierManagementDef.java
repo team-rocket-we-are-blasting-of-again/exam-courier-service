@@ -4,7 +4,6 @@ import com.teamrocket.entity.Courier;
 import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.service.AuthClient;
 import com.teamrocket.service.CourierService;
-import io.cucumber.java.AfterAll;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 public class CourierManagementDef {
