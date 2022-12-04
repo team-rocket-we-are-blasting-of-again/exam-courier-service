@@ -17,7 +17,7 @@ class CourierRepositoryTest {
 
     @Test
     void givenCourierWhenSaveCourierThenReturnsCourier(){
-        Courier courier = sut.save(new Courier("Magdalena", "Wawrzak", "magda@mail.com"));
+        Courier courier =new Courier("Magdalena", "Wawrzak", "magda@mail.com");
         assertEquals(courier.getFirstName(),"Magdalena");
     }
 

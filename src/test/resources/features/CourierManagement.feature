@@ -6,5 +6,5 @@ Feature: Courier Registration
   Scenario: Register a Courier with uniq email
     Given a Courier with first name "Magdalena", last name "Wawrzak" and uniq email "magda@mail.com"
     When Courier registers in the Service
-    Then New Courier is created with with first name "Magdalena", last name "Wawrzak", email "magda@mail.com"
+    Then New Courier is created with first name "Magdalena", last name "Wawrzak", email "magda@mail.com"
     And New Courier has courier id and user id

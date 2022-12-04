@@ -22,9 +22,9 @@ public class Courier {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
-    public int getUserId;
+    private int userId;
 
     public Courier(String firstName, String lastName, String email) {
         this.firstName = firstName;
@@ -39,7 +39,7 @@ public class Courier {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", getUserId=" + getUserId +
+                ", getUserId=" + userId +
                 '}';
     }
 }

@@ -20,7 +20,7 @@ public class CourierService implements ICourierService {
     @Override
     public Courier registerCourier(Courier courier) {
         int userId = authClient.registerCourierUser(courier);
-        courier.setGetUserId(userId);
+        courier.setUserId(userId);
         return courierRepository.save(courier);
     }
 }
