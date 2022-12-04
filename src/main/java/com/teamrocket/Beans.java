@@ -2,11 +2,14 @@ package com.teamrocket;
 
 import com.teamrocket.proto.UserGrpc;
 import com.teamrocket.proto.UserGrpc.UserBlockingStub;
+import com.teamrocket.repository.CourierRepository;
+import com.teamrocket.service.CourierService;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
@@ -36,5 +39,11 @@ public class Beans {
                 .usePlaintext()
                 .build();
     }
+
+    @Bean
+    CourierService courierService(){
+        return new CourierService();
+    }
+
 
 }

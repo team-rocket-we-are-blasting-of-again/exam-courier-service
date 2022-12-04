@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.teamrocket</groupId>
     <artifactId>courier-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>courier-service</name>
     <description>manages courier related operations</description>
     <properties>
@@ -72,12 +72,17 @@
             <version>2.13.1.RELEASE</version>
         </dependency>
         <!--       ______       -->
-
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10</version>
+        </dependency>
 
         <!--__________________________TEST__________________________-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+<!--            <version>3.0.0</version>-->
             <scope>test</scope>
         </dependency>
 
@@ -137,11 +142,22 @@
             <version>1.0.2</version>
             <scope>test</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.pitest</groupId>-->
+<!--            <artifactId>pitest-parent</artifactId>-->
+<!--            <version>1.9.6</version>-->
+<!--            <type>pom</type>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-parent</artifactId>
             <version>1.9.6</version>
             <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
         </dependency>
 
 
@@ -221,14 +237,35 @@
                 <artifactId>pitest-maven</artifactId>
                 <version>1.9.6</version>
                 <configuration>
+                    <targetClasses>
+                        <param>com.teamrocket.service*</param>
+                    </targetClasses>
                     <mutators>
                         <mutator>CONSTRUCTOR_CALLS</mutator>
                         <mutator>VOID_METHOD_CALLS</mutator>
-                        <!--   <mutator>RETURN_VALS</mutator> -->
+<!--                        <mutator>RETURN_VALS</mutator>-->
                         <mutator>NON_VOID_METHOD_CALLS</mutator>
                     </mutators>
                 </configuration>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.pitest</groupId>-->
+<!--                <artifactId>pitest-maven</artifactId>-->
+<!--                <version>1.9.6</version>-->
+<!--                <configuration>-->
+<!--                    <targetClasses>-->
+<!--                        <param>com.teamrocket*</param>-->
+<!--                    </targetClasses>-->
+
+<!--                    <mutators>-->
+<!--                        <mutator>CONSTRUCTOR_CALLS</mutator>-->
+<!--                        <mutator>VOID_METHOD_CALLS</mutator>-->
+<!--                        &lt;!&ndash;   <mutator>RETURN_VALS</mutator> &ndash;&gt;-->
+<!--                        <mutator>NON_VOID_METHOD_CALLS</mutator>-->
+<!--                    </mutators>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
             <plugin>
                 <groupId>org.jacoco</groupId>

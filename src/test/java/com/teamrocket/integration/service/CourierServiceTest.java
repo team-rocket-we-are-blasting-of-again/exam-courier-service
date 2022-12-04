@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -51,4 +52,5 @@ public class CourierServiceTest {
         Courier courier = sut.registerCourier(Courier.builder().firstName("Magdalena").lastName("Wawrzak").email("magdalena@mail.com").build());
         assertEquals(courier.getFirstName(), "Magdalena");
     }
+
 }
