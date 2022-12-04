@@ -1,6 +1,7 @@
 package com.teamrocket;
 
 import com.teamrocket.control.CourierController;
+import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.service.AuthClient;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
@@ -19,7 +20,7 @@ import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @DirtiesContext
 @AutoConfigureMessageVerifier
 @TestPropertySource(locations = {"classpath:applicationtest.properties"})
@@ -29,11 +30,13 @@ public class BaseTestClass {
     private AuthClient authClient;
     @Autowired
     private CourierController courierController;
+    @Autowired
+    CourierRepository courierRepository;
 
     @Before
     public void setup() {
         when(authClient.registerCourierUser(ArgumentMatchers.any())).thenReturn(888);
-
+        courierRepository.deleteAll();
         StandaloneMockMvcBuilder standaloneMockMvcBuilder
                 = MockMvcBuilders.standaloneSetup(courierController);
         RestAssuredMockMvc.standaloneSetup(standaloneMockMvcBuilder);
