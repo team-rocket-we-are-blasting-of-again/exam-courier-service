@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @DirtiesContext
 @AutoConfigureMessageVerifier
 @TestPropertySource(locations = {"classpath:applicationtest.properties"})
