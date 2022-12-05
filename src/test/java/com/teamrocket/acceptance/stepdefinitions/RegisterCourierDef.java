@@ -1,6 +1,7 @@
 package com.teamrocket.acceptance.stepdefinitions;
 
 import com.teamrocket.entity.Courier;
+import com.teamrocket.exceptions.ResourceException;
 import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.service.AuthClient;
 import com.teamrocket.service.CourierService;
@@ -14,8 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-public class CourierManagementDef {
-    Courier courier;
+public class RegisterCourierDef {
+    private Courier courier;
+    private Exception exception;
     @Autowired
     @MockBean
     private AuthClient authClient;
@@ -28,6 +30,7 @@ public class CourierManagementDef {
     @Given("a Courier with first name {string}, last name {string} and uniq email {string}")
     public void a_courier_with_first_name_last_name_and_uniq_email(String firstName, String lastName, String email) {
         courier = new Courier(firstName, lastName, email);
+        System.out.println(courierRepository.findAll().size());
     }
 
     @When("Courier registers in the Service")
@@ -50,6 +53,36 @@ public class CourierManagementDef {
         assertTrue(
                 courier.getId() > 0 && courier.getUserId() == 888
         );
-        courierRepository.deleteAll(); // TODO find a way to clean up after cucumber tests
+
+    }
+
+    @Given("a Courier with first name {string}, last name {string} and existing email {string}")
+    public void a_courier_with_first_name_last_name_and_existing_email(String firstName, String lastName, String email) {
+        courier = courierRepository.save(Courier.builder().firstName(firstName).lastName(lastName).email(email).build());
+        try {
+            courier = courierService.registerCourier(Courier.builder().firstName(firstName).lastName(lastName).email(email).build());
+        } catch (ResourceException e) {
+            exception = e;
+        }
+    }
+
+    @Then("ResourceException is thrown")
+    public void resource_exception_is_thrown() {
+        System.out.println(exception.getClass());
+        assertTrue(exception.getClass().equals(ResourceException.class));
+    }
+
+    @Given("valid Courier")
+    public void valid_courier() {
+        courier = Courier.builder().firstName("Hanna").lastName("Wawrzak").email("hanna@mail.com").build();
+        System.out.println(courierRepository.findAll().size());
+
+    }
+    @Then("Kafka event is emitted")
+    public void kafka_event_is_emitted() {
+        System.out.println(courierRepository.findAll().size());
+
+        // Write code here that turns the phrase above into concrete actions
+      //  throw new io.cucumber.java.PendingException();
     }
 }
