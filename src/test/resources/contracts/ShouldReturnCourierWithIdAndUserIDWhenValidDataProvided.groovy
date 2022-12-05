@@ -10,17 +10,15 @@ Contract.make {
         }
         url("/register") {
             body(
-                    id: 1,
                     firstName : "Magdalena",
                     lastName: "Wawrzak",
                     email: "mw@mail.com",
-                    userId: 888
             )
         }
     }
     response {
         body(
-                id: 1,
+                id: 2,
                 firstName : "Magdalena",
                 lastName: "Wawrzak",
                 email: "mw@mail.com",
