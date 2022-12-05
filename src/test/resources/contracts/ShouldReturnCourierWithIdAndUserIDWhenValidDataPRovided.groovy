@@ -5,21 +5,26 @@ Contract.make {
     description "Should return new Courier wit id and user_id when valid data provided"
     request {
         method POST()
+        headers {
+            contentType(applicationJson())
+        }
         url("/register") {
             body(
-                    first_name : "Magdalena",
-                    last_name: "Wawrzak",
-                    email: "mw@mail.com"
+                    id: 1,
+                    firstName : "Magdalena",
+                    lastName: "Wawrzak",
+                    email: "mw@mail.com",
+                    userId: 888
             )
         }
     }
     response {
         body(
                 id: 1,
-                first_name : "Magdalena",
-                last_name: "Wawrzak",
+                firstName : "Magdalena",
+                lastName: "Wawrzak",
                 email: "mw@mail.com",
-                user_id: 888
+                userId: 888
         )
         status 200
     }
