@@ -49,7 +49,13 @@ public class CourierServiceTest {
 
     @Test
     void GivenCourierWhenRegisterCourierThenNewCourierReturned() {
-        Courier courier = sut.registerCourier(Courier.builder().firstName("Magdalena").lastName("Wawrzak").email("magdalena@mail.com").build());
+        Courier courier = sut.registerCourier(
+                Courier.builder()
+                        .firstName("Magdalena")
+                        .lastName("Wawrzak")
+                        .email("magdalena@mail.com")
+                        .phone("uiui")
+                        .build());
         assertEquals(courier.getFirstName(), "Magdalena");
     }
 
