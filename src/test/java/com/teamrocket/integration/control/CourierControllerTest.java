@@ -63,8 +63,6 @@ public class CourierControllerTest {
     void setUp() {
         courierRepository.deleteAll();
         URL = "http://localhost:" + port;
-        System.out.println(restTemplate);
-        System.out.println(courierRepository);
         MockitoAnnotations.openMocks(this);
         mvc = MockMvcBuilders.standaloneSetup(sut)
                 .build();
@@ -79,7 +77,6 @@ public class CourierControllerTest {
         Courier courier = Courier.builder().firstName("Magda").lastName("W").email("mail@mail.dk").build();
 
         String c = GSON.toJson(courier);
-        System.out.println(c);
         MockHttpServletResponse response = mvc.perform(post("/register")
                         .content(c)
                         .headers(headers)
@@ -94,7 +91,6 @@ public class CourierControllerTest {
         Courier courier = Courier.builder().firstName("Magda").lastName("W").email("mail@mail.dk").build();
         courierRepository.save(Courier.builder().firstName("Magda").lastName("W").email("mail@mail.dk").build());
         String c = GSON.toJson(courier);
-        System.out.println(c);
         MockHttpServletResponse response = mvc.perform(post("/register")
                         .content(c)
                         .headers(headers)

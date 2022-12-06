@@ -4,12 +4,14 @@ import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.service.AuthClient;
 import io.cucumber.java.AfterAll;
 import io.cucumber.junit.platform.engine.Constants;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.mockito.Mockito.reset;
 
@@ -23,7 +25,7 @@ import static org.mockito.Mockito.reset;
                 "com.teamrocket.acceptance.config"
 )
 @ConfigurationParameter(key = Constants.PLUGIN_PUBLISH_QUIET_PROPERTY_NAME, value = "true")
-
+@DirtiesContext()
 public final class CucumberAcceptanceTest {
     @MockBean
     private AuthClient authClient;
@@ -33,6 +35,11 @@ public final class CucumberAcceptanceTest {
     @AfterAll
     void cleanUp() {
         reset(authClient);
+        courierRepository.deleteAll();
+    }
+
+    @AfterEach
+    void cleanDB() {
         courierRepository.deleteAll();
     }
 }

@@ -19,18 +19,18 @@ public class Courier {
 
     @Column(nullable = false)
     private String firstName;
+
     @Column(nullable = false)
     private String lastName;
 
     @Column(nullable = false, unique = true)
     private String email;
-    private int userId;
 
-    public Courier(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
+    @Column(nullable = false, unique = true)
+    private String phone;
+
+    @Column(nullable = false, unique = true)
+    private int userId;
 
     @Override
     public String toString() {

@@ -50,6 +50,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -71,7 +77,20 @@
             <artifactId>grpc-client-spring-boot-starter</artifactId>
             <version>2.13.1.RELEASE</version>
         </dependency>
+
+        <!--       Kafka       -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!--       ______       -->
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -82,7 +101,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-<!--            <version>3.0.0</version>-->
+            <!--            <version>3.0.0</version>-->
             <scope>test</scope>
         </dependency>
 
@@ -142,12 +161,12 @@
             <version>1.0.2</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.pitest</groupId>-->
-<!--            <artifactId>pitest-parent</artifactId>-->
-<!--            <version>1.9.6</version>-->
-<!--            <type>pom</type>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.pitest</groupId>-->
+        <!--            <artifactId>pitest-parent</artifactId>-->
+        <!--            <version>1.9.6</version>-->
+        <!--            <type>pom</type>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.pitest</groupId>
@@ -243,29 +262,29 @@
                     <mutators>
                         <mutator>CONSTRUCTOR_CALLS</mutator>
                         <mutator>VOID_METHOD_CALLS</mutator>
-<!--                        <mutator>RETURN_VALS</mutator>-->
+                        <!--                        <mutator>RETURN_VALS</mutator>-->
                         <mutator>NON_VOID_METHOD_CALLS</mutator>
                     </mutators>
                 </configuration>
             </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>org.pitest</groupId>-->
-<!--                <artifactId>pitest-maven</artifactId>-->
-<!--                <version>1.9.6</version>-->
-<!--                <configuration>-->
-<!--                    <targetClasses>-->
-<!--                        <param>com.teamrocket*</param>-->
-<!--                    </targetClasses>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.pitest</groupId>-->
+            <!--                <artifactId>pitest-maven</artifactId>-->
+            <!--                <version>1.9.6</version>-->
+            <!--                <configuration>-->
+            <!--                    <targetClasses>-->
+            <!--                        <param>com.teamrocket*</param>-->
+            <!--                    </targetClasses>-->
 
-<!--                    <mutators>-->
-<!--                        <mutator>CONSTRUCTOR_CALLS</mutator>-->
-<!--                        <mutator>VOID_METHOD_CALLS</mutator>-->
-<!--                        &lt;!&ndash;   <mutator>RETURN_VALS</mutator> &ndash;&gt;-->
-<!--                        <mutator>NON_VOID_METHOD_CALLS</mutator>-->
-<!--                    </mutators>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--                    <mutators>-->
+            <!--                        <mutator>CONSTRUCTOR_CALLS</mutator>-->
+            <!--                        <mutator>VOID_METHOD_CALLS</mutator>-->
+            <!--                        &lt;!&ndash;   <mutator>RETURN_VALS</mutator> &ndash;&gt;-->
+            <!--                        <mutator>NON_VOID_METHOD_CALLS</mutator>-->
+            <!--                    </mutators>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
 
             <plugin>
                 <groupId>org.jacoco</groupId>

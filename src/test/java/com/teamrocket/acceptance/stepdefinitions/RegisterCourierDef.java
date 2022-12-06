@@ -18,6 +18,7 @@ import static org.mockito.Mockito.when;
 public class RegisterCourierDef {
     private Courier courier;
     private Exception exception;
+
     @Autowired
     @MockBean
     private AuthClient authClient;
@@ -27,10 +28,21 @@ public class RegisterCourierDef {
     @Autowired
     CourierRepository courierRepository;
 
-    @Given("a Courier with first name {string}, last name {string} and uniq email {string}")
-    public void a_courier_with_first_name_last_name_and_uniq_email(String firstName, String lastName, String email) {
-        courier = new Courier(firstName, lastName, email);
-        System.out.println(courierRepository.findAll().size());
+    @Given("a Courier with first name {string}, last name {string}, uniq email {string} and uniq phone {string}")
+    public void a_courier_with_first_name_last_name_uniq_email_and_uniq_phone(String firstName, String lastName, String email, String phone) {
+        courier = Courier.builder().firstName(firstName).lastName(lastName).email(email).phone(phone).build();
+    }
+
+    @Given("a Courier with first name {string}, last name {string}, existing email {string} or existing phone {string}")
+    public void a_courier_with_first_name_last_name_existing_email_or_existing_phone(String firstName, String lastName, String email, String phone) {
+        courierRepository.deleteAll();
+        courierRepository.save(Courier.builder().firstName(firstName).lastName(lastName).email(email).phone("xoxo").userId(18).build());
+        courier = courierRepository.save(Courier.builder().firstName(firstName).lastName(lastName).email("WOW").phone(phone).userId(7).build());
+        try {
+            courierService.registerCourier(Courier.builder().firstName(firstName).lastName(lastName).email(email).userId(9).build());
+        } catch (ResourceException e) {
+            exception = e;
+        }
     }
 
     @When("Courier registers in the Service")
@@ -39,12 +51,13 @@ public class RegisterCourierDef {
         courier = courierService.registerCourier(courier);
     }
 
-    @Then("New Courier is created with first name {string}, last name {string}, email {string}")
-    public void new_courier_is_created_with_with_first_name_last_name_email(String firstName, String lastName, String email) {
+    @Then("New Courier is created with first name {string}, last name {string}, email {string}, phone {string}")
+    public void new_courier_is_created_with_first_name_last_name_email_phone(String firstName, String lastName, String email, String phone) {
         assertTrue(
                 courier.getFirstName().equals(firstName)
                         && courier.getLastName().equals(lastName)
                         && courier.getEmail().equals(email)
+                        && courier.getPhone().equals(phone)
         );
     }
 
@@ -53,36 +66,22 @@ public class RegisterCourierDef {
         assertTrue(
                 courier.getId() > 0 && courier.getUserId() == 888
         );
-
-    }
-
-    @Given("a Courier with first name {string}, last name {string} and existing email {string}")
-    public void a_courier_with_first_name_last_name_and_existing_email(String firstName, String lastName, String email) {
-        courier = courierRepository.save(Courier.builder().firstName(firstName).lastName(lastName).email(email).build());
-        try {
-            courier = courierService.registerCourier(Courier.builder().firstName(firstName).lastName(lastName).email(email).build());
-        } catch (ResourceException e) {
-            exception = e;
-        }
     }
 
     @Then("ResourceException is thrown")
     public void resource_exception_is_thrown() {
-        System.out.println(exception.getClass());
         assertTrue(exception.getClass().equals(ResourceException.class));
     }
 
-    @Given("valid Courier")
-    public void valid_courier() {
-        courier = Courier.builder().firstName("Hanna").lastName("Wawrzak").email("hanna@mail.com").build();
-        System.out.println(courierRepository.findAll().size());
+//    @Given("valid Courier")
+//    public void valid_courier() {
+//        courier = Courier.builder().firstName("Hanna").lastName("Wawrzak").email("hanna@mail.com").phone("99999").build();
+//    }
+//
+//    @Then("Kafka event is emitted")
+//    public void kafka_event_is_emitted() {
+//        System.out.println("KAFKA EVENT EMITTED ???");
+//        throw new io.cucumber.java.PendingException();
+//    }
 
-    }
-    @Then("Kafka event is emitted")
-    public void kafka_event_is_emitted() {
-        System.out.println(courierRepository.findAll().size());
-
-        // Write code here that turns the phrase above into concrete actions
-      //  throw new io.cucumber.java.PendingException();
-    }
 }

@@ -32,17 +32,17 @@ class CourierRepositoryTest {
 
     @Test
     void givenCourierWithValidDataWhenSaveCourierThenReturnsCourier() {
-        Courier courier = new Courier("Magdalena", "Wawrzak", "magda@mail.com");
+        Courier courier = Courier.builder().firstName("Magdalena").lastName("Wawrzak").email("magda@mail.com").phone("123456").build();
         courier = sut.save(courier);
         assertEquals(courier.getFirstName(), "Magdalena");
     }
 
     @Test
     void givenCourierWithExistingEmailWhenSaveCourierThenReturnsCourierThenThrowException() {
-        Courier courier = new Courier("Magda", "Wawrzak", "magda@mail.com");
+        Courier courier =  Courier.builder().firstName("Magdalena").lastName("Wawrzak").email("magda@mail.com").phone("123456").build();
         sut.save(courier);
         assertThrows(DataIntegrityViolationException.class, () -> {
-            sut.save(new Courier("Magdalena", "Wawrzak", "magda@mail.com"));
+            sut.save( Courier.builder().firstName("Magdalena").lastName("Wawrzak").email("magda@mail.com").phone("123456").build());
         }, "DataIntegrityViolationException was expected");
     }
 
