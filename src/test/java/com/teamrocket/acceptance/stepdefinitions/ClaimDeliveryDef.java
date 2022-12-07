@@ -15,8 +15,6 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.AfterEach;
-import org.mockito.ArgumentMatchers;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -48,16 +46,8 @@ public class ClaimDeliveryDef {
     @Autowired
     private CourierController courierController;
 
-    @MockBean
     @Autowired
     CustomerClient customerClient;
-
-    @AfterEach
-    void cleanUp() {
-        System.out.println("MAGDAAA");
-        courierRepository.deleteAll();
-        deliveryRepository.deleteAll();
-    }
 
 
     private MockMvc mvc;
@@ -65,11 +55,13 @@ public class ClaimDeliveryDef {
     private Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private MockHttpServletResponse response;
 
-@Before("@cleanUpDb")
-public void cleanupDb(){
-    System.out.println("MAGDA CLEAN UP");
-    courierRepository.deleteAll();
-}
+    @Before("@cleanUpDb")
+    public void cleanupDb() {
+        courierRepository.deleteAll();
+        when(customerClient.getCustomerDeliveryData(orderId)).thenReturn(customerdata());
+
+    }
+
     @Given("a delivery received from restaurant with area {string}")
     public void a_delivery_task_received_from_restaurant_in_area(String area) {
         delivery = deliveryRepository.save(Delivery
@@ -77,9 +69,6 @@ public void cleanupDb(){
                 .areaId(area)
                 .orderId(orderId)
                 .build());
-        CustomerDeliveryResponse custData = customerdata();
-        when(customerClient.getCustomerDeliveryData(orderId)).thenReturn(custData);
-
     }
 
     @Given("a courier that is online and assigned to area {string}")
@@ -98,8 +87,6 @@ public void cleanupDb(){
 
     @When("courier claims a task")
     public void courier_claims_a_task() throws Exception {
-        System.out.println("CLAIM TASK");
-        System.out.println(delivery);
 
         MockitoAnnotations.openMocks(this);
         mvc = MockMvcBuilders.standaloneSetup(courierController)
@@ -118,7 +105,6 @@ public void cleanupDb(){
     @Then("Delivery is assigned to courier and has status ON_THE_WAY")
     public void delivery_is_assigned_to_courier_and_has_status_in_progress() throws IOException {
         delivery = deliveryRepository.findById(delivery.getId()).get();
-        System.out.println(delivery);
         assertTrue("delivery has courier Id and status ON_THE_WAY",
                 delivery.getCourierId() == courier.getId()
                         && delivery.getStatus().equals(DeliveryStatus.ON_THE_WAY));

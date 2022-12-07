@@ -14,10 +14,10 @@ Feature: Courier Registration
   Scenario:  Register a Courier with existing email
     Given a Courier with existing email
     When Courier registers in the Service with invalid email
-    Then ResourceException is thrown
+    Then ResourceException em is thrown
 
   Scenario:  Register a Courier with existing phone
     Given a Courier with existing phone
     When Courier registers in the Service with invalid phone
-    Then ResourceException is thrown
+    Then ResourceException ph is thrown
 

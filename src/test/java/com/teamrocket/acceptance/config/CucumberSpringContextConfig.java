@@ -4,10 +4,10 @@ import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.repository.DeliveryRepository;
 import com.teamrocket.service.AuthClient;
 import com.teamrocket.service.CustomerClient;
+import io.cucumber.java.BeforeAll;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +32,5 @@ public class CucumberSpringContextConfig {
     private KafkaTemplate kafkaTemplate;
     @MockBean
     private CustomerClient customerClient;
-
-    @Autowired
-    private DeliveryRepository deliveryRepository;
-
-    @Autowired
-    private CourierRepository courierRepository;
-
-    @AfterEach
-    void cleanUp() {
-        System.out.println("MAGDAAA");
-        courierRepository.deleteAll();
-        deliveryRepository.deleteAll();
-    }
 
 }
