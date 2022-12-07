@@ -1,3 +1,4 @@
+@cleanUpDb
 Feature: Courier Registration
   It should be possible to add a Courier to the system.
   Courier should provide first name, last name, email.

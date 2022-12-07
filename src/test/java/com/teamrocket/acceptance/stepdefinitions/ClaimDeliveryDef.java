@@ -11,6 +11,7 @@ import com.teamrocket.model.CustomerDeliveryResponse;
 import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.repository.DeliveryRepository;
 import com.teamrocket.service.CustomerClient;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -64,7 +65,11 @@ public class ClaimDeliveryDef {
     private Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private MockHttpServletResponse response;
 
-
+@Before("@cleanUpDb")
+public void cleanupDb(){
+    System.out.println("MAGDA CLEAN UP");
+    courierRepository.deleteAll();
+}
     @Given("a delivery received from restaurant with area {string}")
     public void a_delivery_task_received_from_restaurant_in_area(String area) {
         delivery = deliveryRepository.save(Delivery

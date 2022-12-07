@@ -1,3 +1,4 @@
+@cleanUpDb
 Feature: Courier Claims Order to deliver
   Each time a restaurant accepts an order,
   courier service should show new delivery task to a courier assigned to the specific area
