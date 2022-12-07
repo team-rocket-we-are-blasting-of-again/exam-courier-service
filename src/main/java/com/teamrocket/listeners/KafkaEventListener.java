@@ -1,4 +1,4 @@
-package com.teamrocket.Listeners;
+package com.teamrocket.listeners;
 
 public class KafkaEventListener {
 }

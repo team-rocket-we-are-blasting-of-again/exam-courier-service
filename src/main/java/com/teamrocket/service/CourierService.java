@@ -40,4 +40,19 @@ public class CourierService implements ICourierService {
         }
     }
 
+    @Override
+    public String chooseArea(String area) {
+        return null;
+    }
+
+    @Override
+    public String claimDeliveryTask(int deliveryTaskId) {
+        return null;
+    }
+
+    @Override
+    public void sendNewDeliveryTasksToArea(String area) {
+
+    }
+
 }

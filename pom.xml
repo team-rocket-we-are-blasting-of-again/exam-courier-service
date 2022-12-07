@@ -95,6 +95,12 @@
             <artifactId>camunda-bpm-spring-boot-starter-external-task-client</artifactId>
             <version>7.17.0</version>
         </dependency>
+
+        <!--       Web Socket       -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
         <!--       ______       -->
 
         <dependency>

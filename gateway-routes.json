@@ -1,0 +1,20 @@
+[
+  {
+    "requestPath": "/courier/**",
+    "forwardUri": "http://courier:8080",
+    "routePathDto": [
+      {
+        "path": "/courier/actuator/**",
+        "method": "BASIC",
+        "rolesAllowed": []
+      },
+      {
+        "path": "/courier/**",
+        "method": "BEARER",
+        "rolesAllowed": [
+          "COURIER"
+        ]
+      }
+    ]
+  }
+]
