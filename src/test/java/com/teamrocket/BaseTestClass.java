@@ -38,7 +38,7 @@ public class BaseTestClass {
     public void setup() {
         when(authClient.registerCourierUser(ArgumentMatchers.any())).thenReturn(888);
         courierRepository.deleteAll();
-        courierRepository.save(Courier.builder().firstName("Anna").lastName("Panna").email("used@mail.com").userId(999999999).build());
+        courierRepository.save(Courier.builder().firstName("Anna").lastName("Panna").email("used@mail.com").userId(999999999).phone("contract").build());
         StandaloneMockMvcBuilder standaloneMockMvcBuilder
                 = MockMvcBuilders.standaloneSetup(courierController);
         RestAssuredMockMvc.standaloneSetup(standaloneMockMvcBuilder);
