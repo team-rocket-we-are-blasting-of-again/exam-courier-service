@@ -5,9 +5,14 @@ Feature: Courier Claims Order to deliver
   Courier then should be able to claim that delivery.
 
   Background:
-    Given a delivery task received from restaurant with id 1 in area "cph"
-    And a courier assigned to area "cph"
+    Given a delivery received from restaurant with area "cph"
+    And a courier that is online and assigned to area "cph"
 
     Scenario:
+      When courier claims a task
+      Then Response status is OK
+      And Delivery is assigned to courier and has status ON_THE_WAY
+
+
 
 

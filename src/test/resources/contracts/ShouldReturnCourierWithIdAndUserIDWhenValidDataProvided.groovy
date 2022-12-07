@@ -13,6 +13,7 @@ Contract.make {
                     firstName : "Magdalena",
                     lastName: "Wawrzak",
                     email: "mw@mail.com",
+                    phone: "700800"
             )
         }
     }
@@ -22,6 +23,7 @@ Contract.make {
                 firstName : "Magdalena",
                 lastName: "Wawrzak",
                 email: "mw@mail.com",
+                phone: "700800",
                 userId: 888
         )
         status 200

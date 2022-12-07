@@ -32,6 +32,10 @@ public class Courier {
     @Column(nullable = false, unique = true)
     private int userId;
 
+    private boolean online;
+    private String areaId;
+    private int legacyId;
+
     @Override
     public String toString() {
         return "Courier{" +
@@ -39,7 +43,11 @@ public class Courier {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", getUserId=" + userId +
+                ", phone='" + phone + '\'' +
+                ", userId=" + userId +
+                ", online=" + online +
+                ", areaId='" + areaId + '\'' +
+                ", legacyId=" + legacyId +
                 '}';
     }
 }
