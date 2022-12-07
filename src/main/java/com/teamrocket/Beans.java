@@ -40,10 +40,4 @@ public class Beans {
                 .build();
     }
 
-    @Bean
-    CourierService courierService(){
-        return new CourierService();
-    }
-
-
 }
