@@ -61,8 +61,7 @@ public class CourierService implements ICourierService {
 
         Delivery delivery = deliveryRepository.findById(request.getDeliveryId())
                 .orElseThrow(() -> new NoSuchElementException("No delivery with id " + request.getDeliveryId()));
-        System.out.println("in claimDeliveryTask");
-        System.out.println(delivery);
+
         delivery.setCourierId(couríerId);
         delivery.setStatus(DeliveryStatus.ON_THE_WAY);
         CustomerDeliveryResponse customerData = customerClient.getCustomerDeliveryData(delivery.getOrderId());

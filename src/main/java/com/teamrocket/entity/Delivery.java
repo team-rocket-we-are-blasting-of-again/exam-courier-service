@@ -19,16 +19,16 @@ public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    int orderId;
-    String restaurantName;
-    int restaurantAddressId;
-    String areaId;
-    long pickupTime;
-    String customerName;
-    String customerPhone;
-    int dropOffAddressId;
-    int courierId;
-    DeliveryStatus status;
+    private int orderId;
+    private String restaurantName;
+    private int restaurantAddressId;
+    private String areaId;
+    private long pickupTime;
+    private String customerName;
+    private String customerPhone;
+    private int dropOffAddressId;
+    private int courierId;
+    private DeliveryStatus status;
 
     @Override
     public String toString() {

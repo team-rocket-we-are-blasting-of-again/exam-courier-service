@@ -4,12 +4,12 @@ description: "Action used to setup the environment"
 runs:
   using: composite
   steps:
-    # Uncomment if you are using a docker compose to setup your environment
-    # - name: Setup environment
-    #   shell: bash
-    #   run: |
-    #     docker-compose up -d
-    #     sleep 5
+     Uncomment if you are using a docker compose to setup your environment
+     - name: Setup environment
+       shell: bash
+       run: |
+         docker-compose up -d
+         sleep 5
 
     - name: Set up JDK 17
       uses: actions/setup-java@v3
