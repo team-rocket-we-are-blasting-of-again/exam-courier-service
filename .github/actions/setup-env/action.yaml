@@ -6,10 +6,9 @@ runs:
   steps:
     - name: Setup environment
       shell: bash
-        run: |
-          docker-compose up -d
-          sleep 5 
-
+      run:
+        docker-compose up -d
+        sleep 5
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
