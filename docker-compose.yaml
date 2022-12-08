@@ -42,13 +42,23 @@ services:
       - POSTGRES_DB=courier
     ports:
       - '5434:5432'
+
+  camunda-db:
+    container_name: mtogo_camunda_postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5444:5432"
+
   camunda:
     container_name: camunda
     image: tobiaszimmer/exam-camunda-server:processUpdate-0.0.3
     ports:
       - "8080:8080"
     environment:
-      DB_CONNECTION_STR: jdbc:postgresql://camunda-postgres:5432/postgres
+      DB_CONNECTION_STR: jdbc:postgresql://camunda-postgres:5444/postgres
       DB_USERNAME: postgres
       DB_POSTGRES: postgres
       CAMUNDA_ADMIN_USERNAME: demo

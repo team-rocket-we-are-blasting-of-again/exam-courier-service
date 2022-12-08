@@ -60,6 +60,7 @@ public class DeliveryService implements IDeliveryService {
         /*
         TODO:
             listen on kafka event about orders ready to pickup
+            send ready orders to websocket
 
          */
     }

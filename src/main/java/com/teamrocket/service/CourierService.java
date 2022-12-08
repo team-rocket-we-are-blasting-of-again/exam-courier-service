@@ -4,7 +4,6 @@ import com.teamrocket.entity.Courier;
 import com.teamrocket.enums.Topic;
 import com.teamrocket.exceptions.ResourceException;
 import com.teamrocket.repository.CourierRepository;
-import com.teamrocket.repository.DeliveryRepository;
 import com.teamrocket.service.interfaces.ICourierService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
