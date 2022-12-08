@@ -1,7 +1,5 @@
 package com.teamrocket.service;
 
-//import com.teamrocket.clients.GrpcClient;
-
 import com.teamrocket.clients.AuthClient;
 import com.teamrocket.entity.Courier;
 import com.teamrocket.enums.Topic;

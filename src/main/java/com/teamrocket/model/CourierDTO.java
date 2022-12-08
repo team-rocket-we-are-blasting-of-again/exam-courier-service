@@ -2,6 +2,7 @@ package com.teamrocket.model;
 
 import com.teamrocket.entity.Courier;
 import lombok.*;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -24,15 +25,4 @@ public class CourierDTO {
         this.id = courier.getId();
     }
 
-    @Override
-    public String toString() {
-        return "CourierDTO{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", userId=" + userId +
-                ", id=" + id +
-                '}';
-    }
 }

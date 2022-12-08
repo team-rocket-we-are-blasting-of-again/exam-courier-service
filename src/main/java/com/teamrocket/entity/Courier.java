@@ -45,19 +45,4 @@ public class Courier {
         this.email = request.getEmail();
         this.phone = request.getPhone();
     }
-
-    @Override
-    public String toString() {
-        return "Courier{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", userId=" + userId +
-                ", online=" + online +
-                ", areaId='" + areaId + '\'' +
-                ", legacyId=" + legacyId +
-                '}';
-    }
 }

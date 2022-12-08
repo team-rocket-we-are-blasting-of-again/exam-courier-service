@@ -17,30 +17,16 @@ public class AuthClient {
     @Autowired
     private UserGrpc.UserBlockingStub userBlockingStub;
 
-
     public int registerCourierUser(Courier courier) {
         LOGGER.info("gRPC Channel {} ", userBlockingStub.getChannel());
-        try {
-            CreateUserResponse response = userBlockingStub.createUser(
-                    CreateUserRequest
-                            .newBuilder()
-                            .setRole(Role.COURIER)
-                            .setRoleId(courier.getId())
-                            .setEmail(courier.getEmail())
-                            .build());
 
-            LOGGER.info("Response: ", response);
-            LOGGER.info("Response user id: ", response.getId());
-            return response.getId();
-        } catch (Exception e) {
-
-            LOGGER.error(e.getClass().toString());
-            LOGGER.error(e.getLocalizedMessage());
-            LOGGER.error(e.getMessage());
-            throw e;
-        }
-
+        CreateUserResponse response = userBlockingStub.createUser(
+                CreateUserRequest
+                        .newBuilder()
+                        .setRole(Role.COURIER)
+                        .setRoleId(courier.getId())
+                        .setEmail(courier.getEmail())
+                        .build());
+        return response.getId();
     }
-
-
 }

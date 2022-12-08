@@ -13,13 +13,4 @@ public class RegisterCourierRequest {
     private String email;
     private String phone;
 
-    @Override
-    public String toString() {
-        return "RegisterCourierRequest{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
-    }
 }

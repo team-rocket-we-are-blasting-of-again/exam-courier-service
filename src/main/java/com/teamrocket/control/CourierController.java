@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class CourierController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CourierController.class);
 
-
     @Autowired
     CourierService courierServiceService;
 
