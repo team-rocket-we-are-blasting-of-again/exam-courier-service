@@ -5,21 +5,24 @@ import com.google.gson.GsonBuilder;
 import com.teamrocket.control.CourierController;
 import com.teamrocket.entity.Courier;
 import com.teamrocket.repository.CourierRepository;
-import com.teamrocket.service.AuthClient;
+import com.teamrocket.clients.AuthClient;
 import com.teamrocket.service.CourierService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,6 +47,9 @@ public class CourierControllerTest {
     private CourierRepository courierRepository;
     @Mock
     private AuthClient authClient;
+    @MockBean
+    KafkaTemplate kafkaTemplate;
+
     @Autowired
     private CourierController sut;
     @Autowired
@@ -67,6 +73,8 @@ public class CourierControllerTest {
         headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         when(authClient.registerCourierUser(any())).thenReturn(888);
+        when(kafkaTemplate.send(ArgumentMatchers.anyString(),any())).thenReturn(null);
+
     }
 
     @Test

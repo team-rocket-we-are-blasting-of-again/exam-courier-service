@@ -45,5 +45,4 @@ public class Beans {
         return CustomerServiceGrpc.newBlockingStub(channel);
     }
 
-
 }

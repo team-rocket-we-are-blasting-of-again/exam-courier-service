@@ -1,11 +1,9 @@
-package com.teamrocket.service;
+package com.teamrocket.clients;
 
 import com.teamrocket.model.CustomerDeliveryData;
 import com.teamrocket.proto.CustomerServiceGrpc;
 import com.teamrocket.proto.DeliveryData;
 import com.teamrocket.proto.SystemOrderId;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +23,8 @@ public class CustomerClient {
     @Autowired
     private CustomerServiceGrpc.CustomerServiceBlockingStub customerServiceBlockingStub;
 
-    private ManagedChannel managedChannel;
-
     public CustomerDeliveryData getCustomerDeliveryData(int orderId) {
-        buildChannel();
+
         LOGGER.info("CustomerDataProcess started for systemOrderId {}", orderId);
 
         DeliveryData grpcResponse = customerServiceBlockingStub.getDeliveryData(
@@ -41,13 +37,5 @@ public class CustomerClient {
         return response;
     }
 
-    private void buildChannel() {
-        if (managedChannel == null) {
-            managedChannel = ManagedChannelBuilder.
-                    forAddress(CUST_gRPC_Host, CUST_gRPC_Port)
-                    .usePlaintext()
-                    .build();
-        }
-    }
 
 }

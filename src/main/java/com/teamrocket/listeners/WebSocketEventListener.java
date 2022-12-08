@@ -33,8 +33,9 @@ public class WebSocketEventListener {
         String sessionId = (String) event.getMessage().getHeaders().get("simpSessionId");
         GenericMessage msg = (GenericMessage) event.getMessage().getHeaders().get("simpConnectMessage");
         Map<String, ArrayList> map = (Map<String, ArrayList>) msg.getHeaders().get("nativeHeaders");
-        String restaurantId = (String) map.get("role_id").get(0);
-        sessions.put(sessionId, restaurantId);
+        LOGGER.info("Headers of new session {}", map);
+        String courierID = (String) map.get("role_id").get(0);
+        sessions.put(sessionId, courierID);
     }
 
 
@@ -43,6 +44,7 @@ public class WebSocketEventListener {
         String sessionId = (String) event.getMessage().getHeaders().get("simpSessionId");
         GenericMessage msg = (GenericMessage) event.getMessage();
         Map<String, ArrayList> map = (Map<String, ArrayList>) msg.getHeaders().get("nativeHeaders");
+
         String courierId = (String) map.get("role_id").get(0);
         String area = ""; //TODO get the topic
         if (courierId.equals(sessions.get(sessionId))) {

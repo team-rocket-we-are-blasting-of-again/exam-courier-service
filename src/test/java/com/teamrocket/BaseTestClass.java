@@ -3,7 +3,7 @@ package com.teamrocket;
 import com.teamrocket.control.CourierController;
 import com.teamrocket.entity.Courier;
 import com.teamrocket.repository.CourierRepository;
-import com.teamrocket.service.AuthClient;
+import com.teamrocket.clients.AuthClient;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
 import org.junit.runner.RunWith;

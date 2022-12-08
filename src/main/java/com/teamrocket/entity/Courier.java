@@ -1,5 +1,6 @@
 package com.teamrocket.entity;
 
+import com.teamrocket.model.RegisterCourierRequest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,6 +38,13 @@ public class Courier {
 
     @Column(nullable = true)
     private int legacyId;
+
+    public Courier(RegisterCourierRequest request) {
+        this.firstName = request.getFirstName();
+        this.lastName = request.getLastName();
+        this.email = request.getEmail();
+        this.phone = request.getPhone();
+    }
 
     @Override
     public String toString() {

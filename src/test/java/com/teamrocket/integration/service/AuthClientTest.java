@@ -3,7 +3,7 @@ package com.teamrocket.integration.service;
 import com.teamrocket.entity.Courier;
 import com.teamrocket.proto.CreateUserResponse;
 import com.teamrocket.proto.UserGrpc;
-import com.teamrocket.service.AuthClient;
+import com.teamrocket.clients.AuthClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

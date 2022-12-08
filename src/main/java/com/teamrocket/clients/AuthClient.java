@@ -1,4 +1,4 @@
-package com.teamrocket.service;
+package com.teamrocket.clients;
 
 import com.teamrocket.entity.Courier;
 import com.teamrocket.proto.CreateUserRequest;

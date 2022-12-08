@@ -10,7 +10,7 @@ import com.teamrocket.model.ClaimRequest;
 import com.teamrocket.model.CustomerDeliveryData;
 import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.repository.DeliveryRepository;
-import com.teamrocket.service.CustomerClient;
+import com.teamrocket.clients.CustomerClient;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

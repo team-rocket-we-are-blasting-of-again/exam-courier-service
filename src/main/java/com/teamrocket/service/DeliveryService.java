@@ -1,5 +1,6 @@
 package com.teamrocket.service;
 
+import com.teamrocket.clients.CustomerClient;
 import com.teamrocket.entity.Delivery;
 import com.teamrocket.enums.DeliveryStatus;
 import com.teamrocket.model.ClaimRequest;

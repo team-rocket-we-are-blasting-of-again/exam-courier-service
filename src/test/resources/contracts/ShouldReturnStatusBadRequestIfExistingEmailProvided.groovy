@@ -2,7 +2,7 @@ import org.springframework.cloud.contract.spec.Contract
 
 
 Contract.make {
-    description "Should return new Courier wit id and user_id when valid data provided"
+    description "Should return 400 "
     request {
         method POST()
         headers {

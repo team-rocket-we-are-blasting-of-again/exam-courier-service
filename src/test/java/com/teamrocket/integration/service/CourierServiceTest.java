@@ -1,8 +1,9 @@
 package com.teamrocket.integration.service;
 
-import com.teamrocket.entity.Courier;
+import com.teamrocket.model.CourierDTO;
+import com.teamrocket.model.RegisterCourierRequest;
 import com.teamrocket.repository.CourierRepository;
-import com.teamrocket.service.AuthClient;
+import com.teamrocket.clients.AuthClient;
 import com.teamrocket.service.CourierService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +14,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -30,6 +33,9 @@ public class CourierServiceTest {
     @MockBean
     private AuthClient authClient;
 
+    @MockBean
+    KafkaTemplate kafkaTemplate;
+
     @Autowired
     private CourierService sut;
     @Autowired
@@ -38,6 +44,8 @@ public class CourierServiceTest {
     @BeforeEach
     void setUp() {
         when(authClient.registerCourierUser(ArgumentMatchers.any())).thenReturn(userID);
+        when(kafkaTemplate.send(ArgumentMatchers.anyString(),any())).thenReturn(null);
+
     }
 
     @AfterEach
@@ -48,8 +56,8 @@ public class CourierServiceTest {
 
     @Test
     void GivenCourierWhenRegisterCourierThenNewCourierReturned() {
-        Courier courier = sut.registerCourier(
-                Courier.builder()
+        CourierDTO courier = sut.registerCourier(
+                RegisterCourierRequest.builder()
                         .firstName("Magdalena")
                         .lastName("Wawrzak")
                         .email("magdalena@mail.com")
