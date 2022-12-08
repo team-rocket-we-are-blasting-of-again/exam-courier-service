@@ -57,6 +57,7 @@ public class ClaimDeliveryDef {
     @Before("@cleanUpDb")
     public void cleanupDb() {
         courierRepository.deleteAll();
+        deliveryRepository.deleteAll();
         when(customerClient.getCustomerDeliveryData(orderId)).thenReturn(customerdata());
 
     }

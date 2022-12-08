@@ -18,14 +18,14 @@ public class KafkaEventListener {
     DeliveryService deliveryService;
 
 
-    @KafkaListener(id = "courier_service", topics = "ORDER_READY")
+    @KafkaListener(id = "courier_service_order_ready", topics = "ORDER_READY")
     @KafkaHandler
     public void listenOnOrderReadyToPickup(@Payload DeliveryTask order) {
         LOGGER.info("RECEIVED delivery: " + order.toString());
         deliveryService.publishNewDeliveryTask(order);
     }
     //TODO delete this listener!
-    @KafkaListener(id = "courier_service", topics = "delivery")
+    @KafkaListener(id = "courier_service_new_delivery", topics = "delivery")
     @KafkaHandler
     public void listenOnPlaceNewOrderKafka(@Payload DeliveryTask order) {
         LOGGER.info("RECEIVED delivery: " + order.toString());
