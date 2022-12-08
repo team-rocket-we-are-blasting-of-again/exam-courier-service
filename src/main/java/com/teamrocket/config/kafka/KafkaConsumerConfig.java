@@ -1,6 +1,7 @@
 package com.teamrocket.config.kafka;
 
 import com.teamrocket.model.CourierDTO;
+import com.teamrocket.model.camunda.DeliveryTask;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -46,9 +47,10 @@ public class KafkaConsumerConfig {
         StringJsonMessageConverter converter = new StringJsonMessageConverter();
         DefaultJackson2JavaTypeMapper typeMapper = new DefaultJackson2JavaTypeMapper();
         typeMapper.setTypePrecedence(Jackson2JavaTypeMapper.TypePrecedence.TYPE_ID);
-        typeMapper.addTrustedPackages("com.teamrocket.model");
+        typeMapper.addTrustedPackages("com.teamrocket.model.*");
         Map<String, Class<?>> mappings = new HashMap<>();
         mappings.put("courierdto", CourierDTO.class);
+        mappings.put("deliverytask", DeliveryTask.class);
         typeMapper.setIdClassMapping(mappings);
         converter.setTypeMapper(typeMapper);
         return converter;

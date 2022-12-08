@@ -10,6 +10,8 @@ public interface IDeliveryService {
 
     void sendNewDeliveryTasksToArea(String area);
 
-    void monitOrderReadyToPickup();
+    void handleOrderReadyEvent(int orderId);
+
+    void handleDropOff(int deliveryId);
 
 }

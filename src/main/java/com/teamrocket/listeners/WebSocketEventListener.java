@@ -45,7 +45,10 @@ public class WebSocketEventListener {
         GenericMessage msg = (GenericMessage) event.getMessage();
         Map<String, ArrayList> map = (Map<String, ArrayList>) msg.getHeaders().get("nativeHeaders");
 
+        LOGGER.info("ON SUBSCRIBE {}, {}", map.keySet(), map.values());
         String courierId = (String) map.get("role_id").get(0);
+        String destination = (String) map.get("destination").get(0);
+        LOGGER.info("New sub to destination {}",destination);
         String area = ""; //TODO get the topic
         if (courierId.equals(sessions.get(sessionId))) {
             //TODO PUSH ALL DELIVERY TASKS

@@ -1,7 +1,7 @@
 package com.teamrocket.acceptance.stepdefinitions;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.teamrocket.clients.CustomerClient;
 import com.teamrocket.control.CourierController;
 import com.teamrocket.entity.Courier;
 import com.teamrocket.entity.Delivery;
@@ -10,7 +10,6 @@ import com.teamrocket.model.ClaimRequest;
 import com.teamrocket.model.CustomerDeliveryData;
 import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.repository.DeliveryRepository;
-import com.teamrocket.clients.CustomerClient;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -48,10 +47,11 @@ public class ClaimDeliveryDef {
     @Autowired
     CustomerClient customerClient;
 
+    @Autowired
+    private Gson GSON;
 
     private MockMvc mvc;
     private HttpHeaders headers = new HttpHeaders();
-    private Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private MockHttpServletResponse response;
 
     @Before("@cleanUpDb")

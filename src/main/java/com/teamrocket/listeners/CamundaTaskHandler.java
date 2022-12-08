@@ -21,10 +21,7 @@ import java.util.NoSuchElementException;
 @Component
 @ExternalTaskSubscription(topicName = "claimOrder")
 public class CamundaTaskHandler implements ExternalTaskHandler {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CamundaTaskHandler.class);
-
-    private final Gson GSON = new Gson();
 
     @Autowired
     DeliveryService deliveryService;
@@ -32,6 +29,8 @@ public class CamundaTaskHandler implements ExternalTaskHandler {
     @Autowired
     private CamundaRepo camundaRepo;
 
+    @Autowired
+    private Gson GSON;
 
     @Override
     public void execute(ExternalTask externalTask, ExternalTaskService externalTaskService) {
@@ -52,14 +51,9 @@ public class CamundaTaskHandler implements ExternalTaskHandler {
             }
         } catch (NoSuchElementException e) {
             camundaRepo.save(task);
-
             LOGGER.info("New DELIVERY_TASK {}", deliveryTask);
-
             deliveryService.publishNewDeliveryTask(deliveryTask);
-
         }
-
     }
-
 
 }

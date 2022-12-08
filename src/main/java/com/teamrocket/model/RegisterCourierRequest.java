@@ -7,6 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@ToString
 public class RegisterCourierRequest {
     private String firstName;
     private String lastName;
