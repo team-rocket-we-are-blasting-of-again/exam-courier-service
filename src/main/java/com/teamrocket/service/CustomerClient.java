@@ -28,6 +28,7 @@ public class CustomerClient {
     private ManagedChannel managedChannel;
 
     public CustomerDeliveryData getCustomerDeliveryData(int orderId) {
+        buildChannel();
         LOGGER.info("CustomerDataProcess started for systemOrderId {}", orderId);
 
         DeliveryData grpcResponse = customerServiceBlockingStub.getDeliveryData(

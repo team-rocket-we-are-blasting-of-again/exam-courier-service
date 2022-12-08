@@ -6,6 +6,7 @@ import com.teamrocket.proto.UserGrpc;
 import com.teamrocket.proto.UserGrpc.UserBlockingStub;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.ManagedChannelProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,5 +44,6 @@ public class Beans {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(CUST_gRPC_Host, CUST_gRPC_Port).usePlaintext().build();
         return CustomerServiceGrpc.newBlockingStub(channel);
     }
+
 
 }

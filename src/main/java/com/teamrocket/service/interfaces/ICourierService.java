@@ -2,8 +2,6 @@ package com.teamrocket.service.interfaces;
 
 import com.teamrocket.entity.Courier;
 import com.teamrocket.exceptions.ResourceException;
-import com.teamrocket.model.ClaimRequest;
-import com.teamrocket.model.camunda.DeliveryTask;
 
 public interface ICourierService {
 

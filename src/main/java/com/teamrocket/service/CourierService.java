@@ -1,5 +1,6 @@
 package com.teamrocket.service;
 
+import com.teamrocket.clients.GrpcClient;
 import com.teamrocket.entity.Courier;
 import com.teamrocket.enums.Topic;
 import com.teamrocket.exceptions.ResourceException;
@@ -27,12 +28,26 @@ public class CourierService implements ICourierService {
     private AuthClient authClient;
 
     @Autowired
+    GrpcClient grpcClient;
+
+    @Autowired
     private KafkaTemplate kafkaTemplate;
 
     @Override
     public Courier registerCourier(Courier courier) throws ResourceException {
-        int userId = authClient.registerCourierUser(courier);
-        courier.setUserId(userId);
+        LOGGER.info("New register courier request {}", courier);
+        try {
+            int userId = grpcClient.registerCourierUser(courier);
+//            int userId = authClient.registerCourierUser(courier);
+            courier.setUserId(userId);
+        }catch (Exception e) {
+
+            LOGGER.error(e.getClass().toString());
+            LOGGER.error(e.getLocalizedMessage());
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+
 
         try {
             courier = courierRepository.save(courier);

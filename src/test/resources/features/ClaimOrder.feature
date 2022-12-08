@@ -14,8 +14,6 @@ Feature: Courier Claims Order to deliver
       Then Response status is OK
       And Delivery is assigned to courier and has status ON_THE_WAY
 
-    Scenario:
-      When
 
 
 
