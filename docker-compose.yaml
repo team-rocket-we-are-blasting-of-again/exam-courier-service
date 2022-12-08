@@ -58,7 +58,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DB_CONNECTION_STR: jdbc:postgresql://camunda-postgres:5444/postgres
+      DB_CONNECTION_STR: jdbc:postgresql://camunda-postgres:5432/postgres
       DB_USERNAME: postgres
       DB_POSTGRES: postgres
       CAMUNDA_ADMIN_USERNAME: demo

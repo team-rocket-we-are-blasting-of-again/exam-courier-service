@@ -7,18 +7,11 @@ import com.teamrocket.proto.SystemOrderId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerClient.class);
-
-    @Value("${cust-grpc-service.host}")
-    private String CUST_gRPC_Host;
-
-    @Value("${cust-grpc-service.port}")
-    private int CUST_gRPC_Port;
 
     @Autowired
     private CustomerServiceGrpc.CustomerServiceBlockingStub customerServiceBlockingStub;
