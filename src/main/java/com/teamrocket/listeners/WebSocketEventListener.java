@@ -1,6 +1,6 @@
 package com.teamrocket.listeners;
 
-import com.teamrocket.service.CourierService;
+import com.teamrocket.service.DeliveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class WebSocketEventListener {
     private static Map<String, String> sessions = new HashMap();
 
     @Autowired
-    CourierService courierService;
+    DeliveryService deliveryService;
 
     @EventListener
     private void handleSessionConnect(SessionConnectEvent event) {
@@ -47,7 +47,7 @@ public class WebSocketEventListener {
         String area = ""; //TODO get the topic
         if (courierId.equals(sessions.get(sessionId))) {
             //TODO PUSH ALL DELIVERY TASKS
-            courierService.sendNewDeliveryTasksToArea(area);
+            deliveryService.sendNewDeliveryTasksToArea(area);
         } else {
             LOGGER.info("No session with given id");
         }

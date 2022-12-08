@@ -7,7 +7,7 @@ import com.teamrocket.entity.Courier;
 import com.teamrocket.entity.Delivery;
 import com.teamrocket.enums.DeliveryStatus;
 import com.teamrocket.model.ClaimRequest;
-import com.teamrocket.model.CustomerDeliveryResponse;
+import com.teamrocket.model.CustomerDeliveryData;
 import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.repository.DeliveryRepository;
 import com.teamrocket.service.CustomerClient;
@@ -17,7 +17,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -116,8 +115,8 @@ public class ClaimDeliveryDef {
 
     }
 
-    private CustomerDeliveryResponse customerdata() {
-        return CustomerDeliveryResponse
+    private CustomerDeliveryData customerdata() {
+        return CustomerDeliveryData
                 .builder()
                 .customerName("Magda")
                 .customerPhone("89797845")

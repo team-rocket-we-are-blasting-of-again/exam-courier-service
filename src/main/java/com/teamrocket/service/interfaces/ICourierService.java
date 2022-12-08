@@ -11,7 +11,4 @@ public interface ICourierService {
 
     String chooseArea(String area);
 
-    DeliveryTask claimDeliveryTask(ClaimRequest claimRequest, int courierId);
-
-    void sendNewDeliveryTasksToArea(String area);
 }

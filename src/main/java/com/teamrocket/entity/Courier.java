@@ -34,6 +34,8 @@ public class Courier {
 
     private boolean online;
     private String areaId;
+
+    @Column(nullable = true)
     private int legacyId;
 
     @Override

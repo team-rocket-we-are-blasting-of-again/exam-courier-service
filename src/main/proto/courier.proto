@@ -38,3 +38,17 @@ service Verify {
 service User {
   rpc createUser (CreateUserRequest) returns (CreateUserResponse);
 }
+
+message SystemOrderId{
+  int32 systemOrderId = 1;
+}
+
+message DeliveryData {
+  string customerName = 1;
+  string customerPhone = 2;
+  int32 dropOfAddressId = 3;
+}
+
+service CustomerService {
+  rpc getDeliveryData(SystemOrderId) returns (DeliveryData);
+}

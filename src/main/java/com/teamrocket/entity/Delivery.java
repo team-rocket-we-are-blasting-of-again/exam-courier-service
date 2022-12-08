@@ -1,6 +1,7 @@
 package com.teamrocket.entity;
 
 import com.teamrocket.enums.DeliveryStatus;
+import com.teamrocket.model.camunda.DeliveryTask;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -30,20 +31,14 @@ public class Delivery {
     private int courierId;
     private DeliveryStatus status;
 
-    @Override
-    public String toString() {
-        return "Delivery{" +
-                "id=" + id +
-                ", orderId=" + orderId +
-                ", restaurantName='" + restaurantName + '\'' +
-                ", restaurantAddressId=" + restaurantAddressId +
-                ", areaId='" + areaId + '\'' +
-                ", pickupTime=" + pickupTime +
-                ", customerName='" + customerName + '\'' +
-                ", customerPhone='" + customerPhone + '\'' +
-                ", dropOffAddressId=" + dropOffAddressId +
-                ", courierId=" + courierId +
-                ", status=" + status +
-                '}';
+    public Delivery(DeliveryTask deliveryTask) {
+        this.orderId = deliveryTask.getOrderId();
+        this.restaurantName = deliveryTask.getRestaurantName();
+        this.restaurantAddressId = deliveryTask.getRestaurantAddressId();
+        this.areaId = deliveryTask.getAreaId();
+        this.pickupTime = deliveryTask.getPickupTime();
+        this.customerName = deliveryTask.getCustomerName();
+        this.customerPhone = deliveryTask.getCustomerPhone();
+        this.dropOffAddressId = deliveryTask.getDropOffAddressId();
     }
 }
