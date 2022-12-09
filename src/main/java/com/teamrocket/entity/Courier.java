@@ -1,5 +1,6 @@
 package com.teamrocket.entity;
 
+import com.teamrocket.model.RegisterCourierRequest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,20 +35,14 @@ public class Courier {
 
     private boolean online;
     private String areaId;
+
+    @Column(nullable = true)
     private int legacyId;
 
-    @Override
-    public String toString() {
-        return "Courier{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", userId=" + userId +
-                ", online=" + online +
-                ", areaId='" + areaId + '\'' +
-                ", legacyId=" + legacyId +
-                '}';
+    public Courier(RegisterCourierRequest request) {
+        this.firstName = request.getFirstName();
+        this.lastName = request.getLastName();
+        this.email = request.getEmail();
+        this.phone = request.getPhone();
     }
 }

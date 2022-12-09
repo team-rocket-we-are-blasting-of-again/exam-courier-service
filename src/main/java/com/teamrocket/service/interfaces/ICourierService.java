@@ -1,17 +1,13 @@
 package com.teamrocket.service.interfaces;
 
-import com.teamrocket.entity.Courier;
 import com.teamrocket.exceptions.ResourceException;
-import com.teamrocket.model.ClaimRequest;
-import com.teamrocket.model.camunda.DeliveryTask;
+import com.teamrocket.model.CourierDTO;
+import com.teamrocket.model.RegisterCourierRequest;
 
 public interface ICourierService {
 
-    Courier registerCourier(Courier courier) throws ResourceException;
+    CourierDTO registerCourier(RegisterCourierRequest courier) throws ResourceException;
 
     String chooseArea(String area);
 
-    DeliveryTask claimDeliveryTask(ClaimRequest claimRequest, int courierId);
-
-    void sendNewDeliveryTasksToArea(String area);
 }

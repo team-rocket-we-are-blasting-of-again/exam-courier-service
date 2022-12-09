@@ -19,7 +19,6 @@ Contract.make {
     }
     response {
         body(
-                id: 2,
                 firstName : "Magdalena",
                 lastName: "Wawrzak",
                 email: "mw@mail.com",

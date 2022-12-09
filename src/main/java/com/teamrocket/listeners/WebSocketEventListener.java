@@ -1,6 +1,6 @@
 package com.teamrocket.listeners;
 
-import com.teamrocket.service.CourierService;
+import com.teamrocket.service.DeliveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class WebSocketEventListener {
     private static Map<String, String> sessions = new HashMap();
 
     @Autowired
-    CourierService courierService;
+    DeliveryService deliveryService;
 
     @EventListener
     private void handleSessionConnect(SessionConnectEvent event) {
@@ -33,8 +33,9 @@ public class WebSocketEventListener {
         String sessionId = (String) event.getMessage().getHeaders().get("simpSessionId");
         GenericMessage msg = (GenericMessage) event.getMessage().getHeaders().get("simpConnectMessage");
         Map<String, ArrayList> map = (Map<String, ArrayList>) msg.getHeaders().get("nativeHeaders");
-        String restaurantId = (String) map.get("role_id").get(0);
-        sessions.put(sessionId, restaurantId);
+        LOGGER.info("Headers of new session {}", map);
+        String courierID = (String) map.get("role_id").get(0);
+        sessions.put(sessionId, courierID);
     }
 
 
@@ -43,11 +44,12 @@ public class WebSocketEventListener {
         String sessionId = (String) event.getMessage().getHeaders().get("simpSessionId");
         GenericMessage msg = (GenericMessage) event.getMessage();
         Map<String, ArrayList> map = (Map<String, ArrayList>) msg.getHeaders().get("nativeHeaders");
+
         String courierId = (String) map.get("role_id").get(0);
         String area = ""; //TODO get the topic
         if (courierId.equals(sessions.get(sessionId))) {
             //TODO PUSH ALL DELIVERY TASKS
-            courierService.sendNewDeliveryTasksToArea(area);
+            deliveryService.sendNewDeliveryTasksToArea(area);
         } else {
             LOGGER.info("No session with given id");
         }
