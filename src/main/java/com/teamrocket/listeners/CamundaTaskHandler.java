@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -53,16 +53,18 @@ public class CamundaTaskHandler implements ExternalTaskHandler {
             DeliveryTask deliveryTask = GSON.fromJson(delStr, DeliveryTask.class);
             CamundaOrderTask task =
                     new CamundaOrderTask(deliveryTask.getOrderId(), processId, taskDefinitionKey, taskId, workerId);
-            try {
-                CamundaOrderTask existingTask = camundaRepo.findById(deliveryTask.getOrderId()).get();
-                if (existingTask.getProcessId().equals(task.getProcessId())) {
+            Optional<CamundaOrderTask> existingTask = camundaRepo.findById(deliveryTask.getOrderId());
+
+            if (existingTask.isPresent()) {
+                if (existingTask.get().getProcessId().equals(task.getProcessId())) {
                     LOGGER.info("Repeated task from Camunda process: {} - omitting...", task.getProcessId());
                 }
-            } catch (NoSuchElementException e) {
+            } else {
                 camundaRepo.save(task);
                 LOGGER.info("New DELIVERY_TASK {}", deliveryTask);
                 deliveryTask = deliveryService.publishNewDeliveryTask(deliveryTask);
             }
+
             LOGGER.info("TASK {} ready to by claimed", deliveryTask);
         } catch (JsonSyntaxException e) {
             String reason = new StringBuilder("Could not deserialize delivery_task ")

@@ -30,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class DeliveryService implements IDeliveryService {
@@ -142,33 +143,34 @@ public class DeliveryService implements IDeliveryService {
 
     private void completeCamundaPickupTask(DeliveryTask deliveryTask) {
         int orderId = deliveryTask.getOrderId();
-        try {
-            CamundaOrderTask task = camundaRepo.findById(orderId).
-                    orElseThrow(() -> new NoSuchElementException("No Pickup task defined for orderId: " + orderId));
 
-            String url = new StringBuilder(restEngine)
-                    .append("/external-task/")
-                    .append(task.getTaskId())
-                    .append("/complete")
-                    .toString();
-
-            String requestBody = buildTaskVariables(task.getWorkerId(), deliveryTask);
-
-            LOGGER.info("FIRE TASK URL: {}", url);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            List<MediaType> mediaTypeList = new ArrayList();
-            mediaTypeList.add(MediaType.APPLICATION_JSON);
-            headers.setAccept(mediaTypeList);
-            HttpEntity<String> request =
-                    new HttpEntity<>(requestBody, headers);
-
-            restTemplate.postForEntity(url, request, String.class);
-            LOGGER.info("completeCamundaPickupTask with variables: {}", requestBody);
-
-        } catch (NoSuchElementException e) {
-            LOGGER.error(e.getMessage());
+        Optional<CamundaOrderTask> optionalTask = camundaRepo.findById(orderId);
+        if (!optionalTask.isPresent()) {
+            LOGGER.error("No Pickup task defined for orderId: " + orderId);
+            return;
         }
+        CamundaOrderTask task = optionalTask.get();
+
+        String url = new StringBuilder(restEngine)
+                .append("/external-task/")
+                .append(task.getTaskId())
+                .append("/complete")
+                .toString();
+
+        String requestBody = buildTaskVariables(task.getWorkerId(), deliveryTask);
+
+        LOGGER.info("FIRE TASK URL: {}", url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        List<MediaType> mediaTypeList = new ArrayList();
+        mediaTypeList.add(MediaType.APPLICATION_JSON);
+        headers.setAccept(mediaTypeList);
+        HttpEntity<String> request =
+                new HttpEntity<>(requestBody, headers);
+
+        restTemplate.postForEntity(url, request, String.class);
+        LOGGER.info("completeCamundaPickupTask with variables: {}", requestBody);
+
     }
 
     private String buildTaskVariables(String workerId, DeliveryTask deliveryTask) {
