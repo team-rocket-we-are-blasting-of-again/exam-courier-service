@@ -59,7 +59,7 @@ public class DeliveryService implements IDeliveryService {
     @Override
     public DeliveryTask claimDeliveryTask(ClaimRequest request, int couríerId) {
 
-        LOGGER.info("Courier {} claims delivery of delivery {}", couríerId, request.getDeliveryId());
+        LOGGER.info("Courier {} claims delivery  {}", couríerId, request.getDeliveryId());
 
         Delivery delivery = deliveryRepository.findById(request.getDeliveryId())
                 .orElseThrow(() -> new NoSuchElementException("No delivery with id " + request.getDeliveryId()));
@@ -74,11 +74,12 @@ public class DeliveryService implements IDeliveryService {
     }
 
     @Override
-    public void publishNewDeliveryTask(DeliveryTask deliveryTask) {
+    public DeliveryTask publishNewDeliveryTask(DeliveryTask deliveryTask) {
         LOGGER.info(" Delivery task to be published: {}", deliveryTask);
-        saveNewDelivery(deliveryTask);
+        deliveryTask = saveNewDelivery(deliveryTask);
         simpMessagingTemplate.convertAndSend("/delivery/" + deliveryTask.getAreaId().toLowerCase(), deliveryTask);
         LOGGER.info("Delivery task sent to websocket {}", deliveryTask);
+        return deliveryTask;
     }
 
     @Override
@@ -114,9 +115,10 @@ public class DeliveryService implements IDeliveryService {
     private DeliveryTask saveNewDelivery(DeliveryTask deliveryTask) {
         deliveryTask = collectDropOffData(deliveryTask);
         Delivery delivery = new Delivery(deliveryTask);
-
         delivery.setStatus(DeliveryStatus.NEW);
         try {
+            LOGGER.info("New Delivery to be saved in DB: {}", delivery);
+
             delivery = deliveryRepository.save(delivery);
         } catch (DataIntegrityViolationException e) {
             LOGGER.error(e.getMessage());
@@ -134,7 +136,7 @@ public class DeliveryService implements IDeliveryService {
         deliveryTask.setCustomerName(customerData.getCustomerName());
         deliveryTask.setCustomerPhone(customerData.getCustomerPhone());
         deliveryTask.setDropOffAddressId(customerData.getDropOfAddressId());
-
+        LOGGER.info("Collected data from Customer Service: {}", deliveryTask);
         return deliveryTask;
     }
 
@@ -170,7 +172,7 @@ public class DeliveryService implements IDeliveryService {
     }
 
     private String buildTaskVariables(String workerId, DeliveryTask deliveryTask) {
-        DeliveryTaskHolder taskHolder = new DeliveryTaskHolder(deliveryTask);
+        DeliveryTaskHolder taskHolder = new DeliveryTaskHolder(deliveryTask.toJsonString());
         Variables variables = new Variables(taskHolder);
         TaskVariables taskVariables = new TaskVariables(workerId, variables);
         return GSON.toJson(taskVariables, TaskVariables.class);

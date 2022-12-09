@@ -24,11 +24,5 @@ public class KafkaEventListener {
         LOGGER.info("RECEIVED delivery: " + order.toString());
         deliveryService.publishNewDeliveryTask(order);
     }
-    //TODO delete this listener!
-    @KafkaListener(id = "courier_service_new_delivery", topics = "delivery")
-    @KafkaHandler
-    public void listenOnPlaceNewOrderKafka(@Payload DeliveryTask order) {
-        LOGGER.info("RECEIVED delivery: " + order.toString());
-        deliveryService.publishNewDeliveryTask(order);
-    }
+
 }

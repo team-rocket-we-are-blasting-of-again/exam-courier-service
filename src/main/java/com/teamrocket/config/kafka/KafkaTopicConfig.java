@@ -48,9 +48,5 @@ public class KafkaTopicConfig {
     public NewTopic NewCourierCreated() {
         return TopicBuilder.name(Topic.NEW_COURIER.toString()).build();
     }
-  @Bean
-    public NewTopic delivery() {
-        return TopicBuilder.name("delivery").build();
-    }
 
 }

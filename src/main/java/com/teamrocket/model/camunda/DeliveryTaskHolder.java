@@ -8,5 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class DeliveryTaskHolder {
-    DeliveryTask value;
+    String value;
 }
