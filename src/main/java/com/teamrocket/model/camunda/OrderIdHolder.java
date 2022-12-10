@@ -7,7 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Variables {
-    DeliveryTaskHolder delivery_task;
-    OrderIdHolder systemOrderId;
+public class OrderIdHolder {
+    int value;
 }

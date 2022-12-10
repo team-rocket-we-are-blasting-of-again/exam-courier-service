@@ -9,10 +9,7 @@ import com.teamrocket.enums.Topic;
 import com.teamrocket.exceptions.ResourceException;
 import com.teamrocket.model.CustomerDeliveryData;
 import com.teamrocket.model.DeliveryRequest;
-import com.teamrocket.model.camunda.DeliveryTask;
-import com.teamrocket.model.camunda.DeliveryTaskHolder;
-import com.teamrocket.model.camunda.TaskVariables;
-import com.teamrocket.model.camunda.Variables;
+import com.teamrocket.model.camunda.*;
 import com.teamrocket.model.kafka.OrderKafkaMsg;
 import com.teamrocket.repository.CamundaRepo;
 import com.teamrocket.repository.DeliveryRepository;
@@ -197,7 +194,8 @@ public class DeliveryService implements IDeliveryService {
 
     private String buildTaskVariables(String workerId, DeliveryTask deliveryTask) {
         DeliveryTaskHolder taskHolder = new DeliveryTaskHolder(deliveryTask.toJsonString());
-        Variables variables = new Variables(taskHolder);
+        OrderIdHolder orderIdHolder = new OrderIdHolder(deliveryTask.getOrderId());
+        Variables variables = new Variables(taskHolder,orderIdHolder);
         TaskVariables taskVariables = new TaskVariables(workerId, variables);
         return GSON.toJson(taskVariables, TaskVariables.class);
     }
