@@ -4,11 +4,9 @@ import com.teamrocket.enums.DeliveryStatus;
 import com.teamrocket.model.camunda.DeliveryTask;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,6 +18,7 @@ public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(unique = true)
     private int orderId;
     private String restaurantName;
     private int restaurantAddressId;

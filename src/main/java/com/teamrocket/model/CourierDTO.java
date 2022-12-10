@@ -8,6 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
+@ToString
 public class CourierDTO {
     private String firstName;
     private String lastName;

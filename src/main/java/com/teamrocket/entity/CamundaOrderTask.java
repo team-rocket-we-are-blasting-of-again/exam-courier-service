@@ -3,6 +3,7 @@ package com.teamrocket.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@ToString
 public class CamundaOrderTask {
     private static final long serialVersionUID = 1L;
 

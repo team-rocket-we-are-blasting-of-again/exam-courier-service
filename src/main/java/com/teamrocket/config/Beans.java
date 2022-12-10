@@ -1,5 +1,6 @@
 package com.teamrocket.config;
 
+import com.google.gson.Gson;
 import com.teamrocket.proto.CustomerServiceGrpc;
 import com.teamrocket.proto.CustomerServiceGrpc.CustomerServiceBlockingStub;
 import com.teamrocket.proto.UserGrpc;
@@ -42,6 +43,11 @@ public class Beans {
     public CustomerServiceBlockingStub customerServiceBlockingStub() {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(CUST_gRPC_Host, CUST_gRPC_Port).usePlaintext().build();
         return CustomerServiceGrpc.newBlockingStub(channel);
+    }
+
+    @Bean
+    public Gson gson() {
+        return new Gson();
     }
 
 }

@@ -1,20 +1,36 @@
 package com.teamrocket.service;
 
+import com.google.gson.Gson;
 import com.teamrocket.clients.CustomerClient;
+import com.teamrocket.entity.CamundaOrderTask;
 import com.teamrocket.entity.Delivery;
 import com.teamrocket.enums.DeliveryStatus;
+import com.teamrocket.exceptions.ResourceException;
 import com.teamrocket.model.ClaimRequest;
 import com.teamrocket.model.CustomerDeliveryData;
 import com.teamrocket.model.camunda.DeliveryTask;
+import com.teamrocket.model.camunda.DeliveryTaskHolder;
+import com.teamrocket.model.camunda.TaskVariables;
+import com.teamrocket.model.camunda.Variables;
+import com.teamrocket.repository.CamundaRepo;
 import com.teamrocket.repository.DeliveryRepository;
 import com.teamrocket.service.interfaces.IDeliveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class DeliveryService implements IDeliveryService {
@@ -24,15 +40,27 @@ public class DeliveryService implements IDeliveryService {
     private DeliveryRepository deliveryRepository;
 
     @Autowired
+    CamundaRepo camundaRepo;
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Autowired
     CustomerClient customerClient;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    @Autowired
+    private Gson GSON;
+
+    @Value("${camunda.bpm.client.base-url}")
+    private String restEngine;
+
     @Override
     public DeliveryTask claimDeliveryTask(ClaimRequest request, int couríerId) {
 
-        LOGGER.info("Courier {} claims delivery of delivery {}", couríerId, request.getDeliveryId());
+        LOGGER.info("Courier {} claims delivery  {}", couríerId, request.getDeliveryId());
 
         Delivery delivery = deliveryRepository.findById(request.getDeliveryId())
                 .orElseThrow(() -> new NoSuchElementException("No delivery with id " + request.getDeliveryId()));
@@ -40,40 +68,65 @@ public class DeliveryService implements IDeliveryService {
         delivery.setCourierId(couríerId);
         delivery.setStatus(DeliveryStatus.ON_THE_WAY);
         delivery = deliveryRepository.save(delivery);
+        DeliveryTask deliveryTask = new DeliveryTask(delivery);
+        completeCamundaPickupTask(deliveryTask);
 
-        //TODO execute camunda task
-        return new DeliveryTask(delivery);
+        return deliveryTask;
     }
 
     @Override
-    public void publishNewDeliveryTask(DeliveryTask deliveryTask) {
-        saveNewDelivery(deliveryTask);
-        simpMessagingTemplate.convertAndSend(deliveryTask.getAreaId(), deliveryTask);
+    public DeliveryTask publishNewDeliveryTask(DeliveryTask deliveryTask) {
+        LOGGER.info(" Delivery task to be published: {}", deliveryTask);
+        deliveryTask = saveNewDelivery(deliveryTask);
+        simpMessagingTemplate.convertAndSend("/delivery/" + deliveryTask.getAreaId().toLowerCase(), deliveryTask);
+        LOGGER.info("Delivery task sent to websocket {}", deliveryTask);
+        return deliveryTask;
     }
 
     @Override
-    public void sendNewDeliveryTasksToArea(String area) {
-        //TODO once a courier assigns to an area, system should send all the available tasks
+    public void sendNewDeliveryTasksToArea(String areaId) {
+        deliveryRepository.findAllByAreaIdAndStatus(areaId, DeliveryStatus.NEW).forEach(d -> {
+            simpMessagingTemplate
+                    .convertAndSend("/delivery/" + areaId.toLowerCase(), new DeliveryTask(d));
+        });
     }
 
     @Override
-    public void monitOrderReadyToPickup() {
-        /*
-        TODO:
-            listen on kafka event about orders ready to pickup
-            send ready orders to websocket
+    public void handleOrderReadyEvent(int orderId) {
 
-         */
+        List<Delivery> readyToPickup = deliveryRepository.findAllByOrderIdAndStatus(orderId, DeliveryStatus.NEW);
+        if (readyToPickup.size() < 1) {
+            throw new NoSuchElementException("No delivery task for order id " + orderId);
+        }
+        if (readyToPickup.size() > 1) {
+            LOGGER.warn("More than one delivery for given order id {} ", orderId);
+            throw new ResourceException("Delivery could not be saved - Delivery for order id "
+                    + orderId + " already exists");
+        }
+        Delivery delivery = readyToPickup.get(0);
+        simpMessagingTemplate
+                .convertAndSend("/delivery/" + delivery.getCourierId() + "ready", new DeliveryTask(delivery));
+    }
+
+    @Override
+    public void handleDropOff(int deliveryId) {
+        //TODO
     }
 
     private DeliveryTask saveNewDelivery(DeliveryTask deliveryTask) {
         deliveryTask = collectDropOffData(deliveryTask);
-
         Delivery delivery = new Delivery(deliveryTask);
-
         delivery.setStatus(DeliveryStatus.NEW);
-        delivery = deliveryRepository.save(delivery);
+        try {
+            LOGGER.info("New Delivery to be saved in DB: {}", delivery);
 
+            delivery = deliveryRepository.save(delivery);
+        } catch (DataIntegrityViolationException e) {
+            LOGGER.error(e.getMessage());
+            throw new ResourceException("Delivery could not be saved - Delivery for order id "
+                    + delivery.getOrderId() + " already exists");
+        }
+        LOGGER.info("New delivery saved {} ", delivery);
         return new DeliveryTask(delivery);
     }
 
@@ -84,7 +137,48 @@ public class DeliveryService implements IDeliveryService {
         deliveryTask.setCustomerName(customerData.getCustomerName());
         deliveryTask.setCustomerPhone(customerData.getCustomerPhone());
         deliveryTask.setDropOffAddressId(customerData.getDropOfAddressId());
-
+        LOGGER.info("Collected data from Customer Service: {}", deliveryTask);
         return deliveryTask;
     }
+
+    private void completeCamundaPickupTask(DeliveryTask deliveryTask) {
+        int orderId = deliveryTask.getOrderId();
+
+        Optional<CamundaOrderTask> optionalTask = camundaRepo.findById(orderId);
+        if (!optionalTask.isPresent()) {
+            LOGGER.error("No Pickup task defined for orderId: " + orderId);
+            return;
+        }
+        CamundaOrderTask task = optionalTask.get();
+
+        String url = new StringBuilder(restEngine)
+                .append("/external-task/")
+                .append(task.getTaskId())
+                .append("/complete")
+                .toString();
+
+        String requestBody = buildTaskVariables(task.getWorkerId(), deliveryTask);
+
+        LOGGER.info("FIRE TASK URL: {}", url);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        List<MediaType> mediaTypeList = new ArrayList();
+        mediaTypeList.add(MediaType.APPLICATION_JSON);
+        headers.setAccept(mediaTypeList);
+        HttpEntity<String> request =
+                new HttpEntity<>(requestBody, headers);
+
+        restTemplate.postForEntity(url, request, String.class);
+        LOGGER.info("completeCamundaPickupTask with variables: {}", requestBody);
+
+    }
+
+    private String buildTaskVariables(String workerId, DeliveryTask deliveryTask) {
+        DeliveryTaskHolder taskHolder = new DeliveryTaskHolder(deliveryTask.toJsonString());
+        Variables variables = new Variables(taskHolder);
+        TaskVariables taskVariables = new TaskVariables(workerId, variables);
+        return GSON.toJson(taskVariables, TaskVariables.class);
+    }
+
+
 }

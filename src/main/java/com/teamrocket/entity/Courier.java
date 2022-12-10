@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
+@ToString
 @Entity
 public class Courier {
     private static final long serialVersionUID = 1L;

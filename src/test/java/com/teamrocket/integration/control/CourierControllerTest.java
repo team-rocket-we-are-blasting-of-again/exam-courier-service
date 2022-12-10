@@ -1,11 +1,10 @@
 package com.teamrocket.integration.control;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.teamrocket.clients.AuthClient;
 import com.teamrocket.control.CourierController;
 import com.teamrocket.entity.Courier;
 import com.teamrocket.repository.CourierRepository;
-import com.teamrocket.clients.AuthClient;
 import com.teamrocket.service.CourierService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +41,6 @@ public class CourierControllerTest {
     private int port;
     private String URL;
 
-
     @Autowired
     private CourierRepository courierRepository;
     @Mock
@@ -58,10 +56,11 @@ public class CourierControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private Gson GSON;
+
     private MockMvc mvc;
     private HttpHeaders headers;
-    private Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
 
     @BeforeEach
     void setUp() {
@@ -74,7 +73,6 @@ public class CourierControllerTest {
         headers.setContentType(MediaType.APPLICATION_JSON);
         when(authClient.registerCourierUser(any())).thenReturn(888);
         when(kafkaTemplate.send(ArgumentMatchers.anyString(),any())).thenReturn(null);
-
     }
 
     @Test
@@ -105,6 +103,4 @@ public class CourierControllerTest {
 
         assertTrue("Response status is not ok", (response.getStatus() == HttpStatus.BAD_REQUEST.value()));
     }
-
-
 }
