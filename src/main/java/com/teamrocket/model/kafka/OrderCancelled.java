@@ -1,4 +1,4 @@
-package com.teamrocket.model;
+package com.teamrocket.model.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

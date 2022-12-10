@@ -1,7 +1,7 @@
 package com.teamrocket.control;
 
-import com.teamrocket.model.ClaimRequest;
-import com.teamrocket.model.RegisterCourierRequest;
+import com.teamrocket.model.DeliveryRequest;
+import com.teamrocket.model.courier.RegisterCourierRequest;
 import com.teamrocket.service.CourierService;
 import com.teamrocket.service.DeliveryService;
 import org.slf4j.Logger;
@@ -29,8 +29,14 @@ public class CourierController {
     }
 
     @PostMapping("claim")
-    public ResponseEntity claimDeliveryTask(@RequestBody ClaimRequest request,
+    public ResponseEntity claimDeliveryTask(@RequestBody DeliveryRequest request,
                                             @RequestHeader("role_id") int courierId) {
         return ResponseEntity.ok(deliveryService.claimDeliveryTask(request, courierId));
+    }
+
+    @PostMapping("drop")
+    public ResponseEntity dropOffOrder(@RequestBody DeliveryRequest request,
+                                       @RequestHeader("role_id") int courierId) {
+        return ResponseEntity.ok(deliveryService.handleDropOff(request, courierId));
     }
 }

@@ -5,13 +5,15 @@ import com.teamrocket.clients.CustomerClient;
 import com.teamrocket.entity.CamundaOrderTask;
 import com.teamrocket.entity.Delivery;
 import com.teamrocket.enums.DeliveryStatus;
+import com.teamrocket.enums.Topic;
 import com.teamrocket.exceptions.ResourceException;
-import com.teamrocket.model.ClaimRequest;
 import com.teamrocket.model.CustomerDeliveryData;
+import com.teamrocket.model.DeliveryRequest;
 import com.teamrocket.model.camunda.DeliveryTask;
 import com.teamrocket.model.camunda.DeliveryTaskHolder;
 import com.teamrocket.model.camunda.TaskVariables;
 import com.teamrocket.model.camunda.Variables;
+import com.teamrocket.model.kafka.OrderKafkaMsg;
 import com.teamrocket.repository.CamundaRepo;
 import com.teamrocket.repository.DeliveryRepository;
 import com.teamrocket.service.interfaces.IDeliveryService;
@@ -28,10 +30,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DeliveryService implements IDeliveryService {
@@ -56,13 +55,13 @@ public class DeliveryService implements IDeliveryService {
     private Gson GSON;
 
     @Autowired
-    private KafkaTemplate<String, Object> kafkaTemplate;
+    private KafkaTemplate kafkaTemplate;
 
     @Value("${camunda.bpm.client.base-url}")
     private String restEngine;
 
     @Override
-    public DeliveryTask claimDeliveryTask(ClaimRequest request, int couríerId) {
+    public DeliveryTask claimDeliveryTask(DeliveryRequest request, int couríerId) {
 
         LOGGER.info("Courier {} claims delivery  {}", couríerId, request.getDeliveryId());
 
@@ -73,26 +72,29 @@ public class DeliveryService implements IDeliveryService {
         delivery.setStatus(DeliveryStatus.ON_THE_WAY);
         delivery = deliveryRepository.save(delivery);
         DeliveryTask deliveryTask = new DeliveryTask(delivery);
+        kafkaTemplate.send(Topic.ORDER_CLAIMED.toString(), new OrderKafkaMsg(delivery.getOrderId()));
         completeCamundaPickupTask(deliveryTask);
-
+        sendNewDeliveryTasksToArea(delivery.getAreaId());
         return deliveryTask;
     }
 
     @Override
-    public DeliveryTask publishNewDeliveryTask(DeliveryTask deliveryTask) {
+    public DeliveryTask saveAndPublishNewDeliveryTask(DeliveryTask deliveryTask) {
         LOGGER.info(" Delivery task to be published: {}", deliveryTask);
         deliveryTask = saveNewDelivery(deliveryTask);
-        simpMessagingTemplate.convertAndSend("/delivery/" + deliveryTask.getAreaId().toLowerCase(), deliveryTask);
+        sendNewDeliveryTasksToArea(deliveryTask.getAreaId());
         LOGGER.info("Delivery task sent to websocket {}", deliveryTask);
         return deliveryTask;
     }
 
     @Override
     public void sendNewDeliveryTasksToArea(String areaId) {
+        Set<DeliveryTask> tasks = new HashSet<>();
         deliveryRepository.findAllByAreaIdAndStatus(areaId, DeliveryStatus.NEW).forEach(d -> {
-            simpMessagingTemplate
-                    .convertAndSend("/delivery/" + areaId.toLowerCase(), new DeliveryTask(d));
+            tasks.add(new DeliveryTask(d));
         });
+        simpMessagingTemplate
+                .convertAndSend("/delivery/" + areaId.toLowerCase(), tasks);
     }
 
     @Override
@@ -113,8 +115,25 @@ public class DeliveryService implements IDeliveryService {
     }
 
     @Override
-    public void handleDropOff(int deliveryId) {
-        //TODO
+    public DeliveryTask handleDropOff(DeliveryRequest request, int courierId) {
+        Delivery delivery = deliveryRepository.findById(request.getDeliveryId()).
+                orElseThrow(() -> new NoSuchElementException("No delivery with id " + request.getDeliveryId()));
+        if (delivery.getCourierId() != courierId) {
+            throw new ResourceException(String
+                    .format("Courier with courierId %d is not assigned to the delivery " +
+                                    "with deliveryId: %d. Assigned courier is courierID %d",
+                            courierId, request.getDeliveryId(), delivery.getCourierId()));
+        }
+        if (!delivery.getStatus().equals(DeliveryStatus.ON_THE_WAY)) {
+            throw new ResourceException(String
+                    .format("Delivery status with deliveryId %d is not 'ON_THE_WAY', actual status is '%s'",
+                            delivery.getId(), delivery.getStatus().toString()));
+        }
+
+        delivery.setStatus(DeliveryStatus.COMPLETED);
+        delivery = deliveryRepository.save(delivery);
+        kafkaTemplate.send(Topic.ORDER_DELIVERED.toString(), new OrderKafkaMsg(delivery.getOrderId()));
+        return new DeliveryTask(delivery);
     }
 
     private DeliveryTask saveNewDelivery(DeliveryTask deliveryTask) {
@@ -174,7 +193,6 @@ public class DeliveryService implements IDeliveryService {
 
         restTemplate.postForEntity(url, request, String.class);
         LOGGER.info("completeCamundaPickupTask with variables: {}", requestBody);
-
     }
 
     private String buildTaskVariables(String workerId, DeliveryTask deliveryTask) {

@@ -7,6 +7,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class ClaimRequest {
+public class DeliveryRequest {
     int deliveryId;
 }

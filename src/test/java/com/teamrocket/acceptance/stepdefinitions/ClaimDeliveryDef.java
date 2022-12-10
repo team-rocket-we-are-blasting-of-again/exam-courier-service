@@ -6,7 +6,7 @@ import com.teamrocket.control.CourierController;
 import com.teamrocket.entity.Courier;
 import com.teamrocket.entity.Delivery;
 import com.teamrocket.enums.DeliveryStatus;
-import com.teamrocket.model.ClaimRequest;
+import com.teamrocket.model.DeliveryRequest;
 import com.teamrocket.model.CustomerDeliveryData;
 import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.repository.DeliveryRepository;
@@ -93,7 +93,7 @@ public class ClaimDeliveryDef {
                 .build();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("role_id", courier.getId().toString());
-        ClaimRequest request = new ClaimRequest(delivery.getId());
+        DeliveryRequest request = new DeliveryRequest(delivery.getId());
         String requestBody = GSON.toJson(request);
         response = mvc.perform(post("/claim")
                         .content(requestBody)

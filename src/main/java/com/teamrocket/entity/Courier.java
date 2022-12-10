@@ -1,6 +1,6 @@
 package com.teamrocket.entity;
 
-import com.teamrocket.model.RegisterCourierRequest;
+import com.teamrocket.model.courier.RegisterCourierRequest;
 import lombok.*;
 
 import javax.persistence.*;
