@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -29,6 +30,8 @@ import static org.mockito.Mockito.when;
 public class BaseTestClass {
     @MockBean
     private AuthClient authClient;
+    @MockBean
+    private KafkaTemplate kafkaTemplate;
     @Autowired
     private CourierController courierController;
     @Autowired
@@ -37,6 +40,7 @@ public class BaseTestClass {
     @Before
     public void setup() {
         when(authClient.registerCourierUser(ArgumentMatchers.any())).thenReturn(888);
+        when(kafkaTemplate.send(ArgumentMatchers.any(),ArgumentMatchers.any())).thenReturn(null);
         courierRepository.deleteAll();
         courierRepository.save(Courier.builder().firstName("Anna").lastName("Panna").email("used@mail.com").userId(999999999).phone("contract").build());
         StandaloneMockMvcBuilder standaloneMockMvcBuilder

@@ -288,7 +288,14 @@
                 <version>1.9.6</version>
                 <configuration>
                     <targetClasses>
-                        <param>com.teamrocket.service*</param>
+                        <param>com.teamrocket.clients.*</param>
+                        <param>com.teamrocket.control.*</param>
+                        <param>com.teamrocket.entity.*</param>
+                        <param>com.teamrocket.exceptions.*</param>
+                        <param>com.teamrocket.listeners.*</param>
+                        <param>com.teamrocket.model.*</param>
+                        <param>com.teamrocket.repository.*</param>
+                        <param>com.teamrocket.service.*</param>
                     </targetClasses>
                     <mutators>
                         <mutator>CONSTRUCTOR_CALLS</mutator>
