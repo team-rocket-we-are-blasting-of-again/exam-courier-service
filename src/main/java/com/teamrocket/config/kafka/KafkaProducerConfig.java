@@ -27,9 +27,10 @@ public class KafkaProducerConfig {
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         props.put(JsonDeserializer.TYPE_MAPPINGS,
-                "courier:com.teamrocket.entity.CourierDTO,"
+                "courier:com.teamrocket.model.courier.CourierDTO,"
                         + "newdeliverytask:com.teamrocket.model.camunda.DeliveryTask,"
-                        + "ordercancelled:com.teamrocket.model.OrderCancelled,");
+                        + "ordercancelled:com.teamrocket.model.kafka.OrderCancelled,"
+                        + "orderkafkamsg:com.teamrocket.model.kafka.OrderKafkaMsg");
         return props;
     }
 

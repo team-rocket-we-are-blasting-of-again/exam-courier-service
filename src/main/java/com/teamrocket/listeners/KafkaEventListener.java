@@ -1,6 +1,6 @@
 package com.teamrocket.listeners;
 
-import com.teamrocket.model.camunda.DeliveryTask;
+import com.teamrocket.model.kafka.OrderKafkaMsg;
 import com.teamrocket.service.DeliveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +20,9 @@ public class KafkaEventListener {
 
     @KafkaListener(id = "courier_service_order_ready", topics = "ORDER_READY")
     @KafkaHandler
-    public void listenOnOrderReadyToPickup(@Payload DeliveryTask order) {
-        LOGGER.info("RECEIVED delivery: " + order.toString());
-        deliveryService.publishNewDeliveryTask(order);
+    public void listenOnOrderReadyToPickup(@Payload OrderKafkaMsg orderMsg) {
+        LOGGER.info("RECEIVED delivery: " + orderMsg.toString());
+        deliveryService.handleOrderReadyEvent(orderMsg.getSystemOrderId());
     }
 
 }

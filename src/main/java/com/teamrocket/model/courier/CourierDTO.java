@@ -1,4 +1,4 @@
-package com.teamrocket.model;
+package com.teamrocket.model.courier;
 
 import com.teamrocket.entity.Courier;
 import lombok.*;

@@ -1,7 +1,8 @@
 package com.teamrocket.config.kafka;
 
-import com.teamrocket.model.CourierDTO;
-import com.teamrocket.model.OrderCancelled;
+import com.teamrocket.model.courier.CourierDTO;
+import com.teamrocket.model.kafka.OrderCancelled;
+import com.teamrocket.model.kafka.OrderKafkaMsg;
 import com.teamrocket.model.camunda.DeliveryTask;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -53,6 +54,9 @@ public class KafkaConsumerConfig {
         mappings.put("courierdto", CourierDTO.class);
         mappings.put("deliverytask", DeliveryTask.class);
         mappings.put("ordercancelled", OrderCancelled.class);
+        mappings.put("ordercancelled", OrderCancelled.class);
+        mappings.put("orderkafkamsg", OrderKafkaMsg.class);
+
         typeMapper.setIdClassMapping(mappings);
         converter.setTypeMapper(typeMapper);
         return converter;

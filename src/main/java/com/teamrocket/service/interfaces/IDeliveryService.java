@@ -1,17 +1,16 @@
 package com.teamrocket.service.interfaces;
 
-import com.teamrocket.model.ClaimRequest;
+import com.teamrocket.model.DeliveryRequest;
 import com.teamrocket.model.camunda.DeliveryTask;
 
 public interface IDeliveryService {
-    DeliveryTask claimDeliveryTask(ClaimRequest request, int couríerId);
+    DeliveryTask claimDeliveryTask(DeliveryRequest request, int couríerId);
 
-    DeliveryTask publishNewDeliveryTask(DeliveryTask orderId);
+    DeliveryTask saveAndPublishNewDeliveryTask(DeliveryTask orderId);
 
     void sendNewDeliveryTasksToArea(String area);
 
     void handleOrderReadyEvent(int orderId);
 
-    void handleDropOff(int deliveryId);
-
+    DeliveryTask handleDropOff(DeliveryRequest deliveryId, int courierId);
 }
