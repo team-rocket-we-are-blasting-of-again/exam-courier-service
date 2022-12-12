@@ -53,7 +53,6 @@ public class WebSocketEventListener {
     @EventListener
     private void handleSessionDisconnect(SessionDisconnectEvent event) {
         String sessionId = (String) event.getMessage().getHeaders().get("simpSessionId");
-        GenericMessage msg = (GenericMessage) event.getMessage().getHeaders().get("simpConnectMessage");
         LOGGER.info("Courier with courierId {} disconnected", sessions.get(sessionId));
         sessions.remove(sessionId);
     }

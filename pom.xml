@@ -306,24 +306,6 @@
                 </configuration>
             </plugin>
 
-            <!--            <plugin>-->
-            <!--                <groupId>org.pitest</groupId>-->
-            <!--                <artifactId>pitest-maven</artifactId>-->
-            <!--                <version>1.9.6</version>-->
-            <!--                <configuration>-->
-            <!--                    <targetClasses>-->
-            <!--                        <param>com.teamrocket*</param>-->
-            <!--                    </targetClasses>-->
-
-            <!--                    <mutators>-->
-            <!--                        <mutator>CONSTRUCTOR_CALLS</mutator>-->
-            <!--                        <mutator>VOID_METHOD_CALLS</mutator>-->
-            <!--                        &lt;!&ndash;   <mutator>RETURN_VALS</mutator> &ndash;&gt;-->
-            <!--                        <mutator>NON_VOID_METHOD_CALLS</mutator>-->
-            <!--                    </mutators>-->
-            <!--                </configuration>-->
-            <!--            </plugin>-->
-
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -358,10 +340,57 @@
                                     </limits>
                                 </rule>
                             </rules>
+                            <excludeRoots>
+                                <excludeRoot>target.classes.com.teamrocket.proto</excludeRoot>
+                                <excludeRoot>com.teamrocket.proto</excludeRoot>
+                            </excludeRoots>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.17.0</version>
+                <configuration>
+                    <excludes>
+                        <exclude>checkstyle:/src/examples/.*</exclude>
+                        <exclude>dependencies:.*</exclude>
+                        <exclude>com/teamrocket/proto/*</exclude>
+                        <exclude>com/teamrocket/proto/*</exclude>
+                        <exclude>target/classes/com/teamrocket/proto/*</exclude>
+                    </excludes>
+                    <excludeRoots>
+                        <excludeRoot>target/classes/com/teamrocket/proto</excludeRoot>
+                        <excludeRoot>com/teamrocket/proto</excludeRoot>
+                        <excludeRoot>target.classes.com.teamrocket.proto</excludeRoot>
+                        <excludeRoot>com.teamrocket.proto</excludeRoot>
+                    </excludeRoots>
+                    <excludeFromFailureFile>exclude-pmd.properties</excludeFromFailureFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+
+                            <excludeFromFailureFile>exclude-pmd.properties</excludeFromFailureFile>
+                        </configuration>
+                    </execution>
+                    <!--                    <execution>
+                                            <id>cpd-check</id>
+                                            <goals>
+                                                <goal>cpd-check</goal>
+                                            </goals>
+                                            <configuration>
+                                                <excludeFromFailureFile>exclude-cpd.properties</excludeFromFailureFile>
+                                            </configuration>
+                                        </execution>-->
+                </executions>
+            </plugin>
+
 
         </plugins>
     </build>
@@ -476,9 +505,39 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.3.0</version>
+
+
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.17.0</version>
+                <configuration>
+                    <excludes>
+                        <exclude>*</exclude>
+                        <exclude>com.teamrocket.proto.*</exclude>
+                        <exclude>.*/com/teamrocket/proto/*.*</exclude>
+
+                        <exclude>com.teamrocket.proto</exclude>
+                        <exclude>com.teamrocket.proto.</exclude>
+                        <exclude>com.teamrocket.proto.CreateUserResponse</exclude>
+                        <exclude>com.teamrocket.proto.CreateUserRequestOrBuilder</exclude>
+                        <exclude>com.teamrocket.proto.CreateUserRequest</exclude>
+                        <exclude>com.teamrocket.proto.Courier</exclude>
+                    </excludes>
+                    <excludes>*</excludes>
+                    <excludes>*.*</excludes>
+                    <excludes>target/classes/proto</excludes>
+                    <excludeFromFailureFile>exclude-pmd.properties</excludeFromFailureFile>
+                    <excludeRoots>
+                        <excludeRoot>target.classes.com.teamrocket.proto</excludeRoot>
+                        <excludeRoot>com.teamrocket.proto</excludeRoot>
+                    </excludeRoots>
+                </configuration>
             </plugin>
+
         </plugins>
     </reporting>
 
