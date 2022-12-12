@@ -51,10 +51,5 @@ public class CourierService implements ICourierService {
         }
     }
 
-    @Override
-    public String chooseArea(String area) {
-        return null;
-    }
-
 
 }

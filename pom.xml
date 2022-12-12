@@ -297,6 +297,9 @@
                         <param>com.teamrocket.repository.*</param>
                         <param>com.teamrocket.service.*</param>
                     </targetClasses>
+                    <excludedClasses>com.teamrocket.proto.*</excludedClasses>
+                    <classpathDependencyExcludes>com.teamrocket.proto.*</classpathDependencyExcludes>
+
                     <mutators>
                         <mutator>CONSTRUCTOR_CALLS</mutator>
                         <mutator>VOID_METHOD_CALLS</mutator>
