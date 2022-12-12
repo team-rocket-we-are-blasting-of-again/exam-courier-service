@@ -495,8 +495,8 @@
                 <configuration>
                     <excludes>
                         <exclude>com/teamrocket/proto/*</exclude>
-                        <exclude>com/teamrocket/listeners/WebSocketEventListener*</exclude>
                     </excludes>
+                    <excludeFromFailureFile>exclude-pmd.properties</excludeFromFailureFile>
                 </configuration>
             </plugin>
         </plugins>
