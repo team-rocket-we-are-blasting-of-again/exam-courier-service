@@ -43,18 +43,16 @@ services:
     ports:
       - '5434:5432'
 
-  camunda-db:
-    container_name: mtogo_camunda_postgres
+  camunda-postgres:
+    container_name: camunda_postgres
     image: postgres:latest
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - "5444:5432"
 
   camunda:
     container_name: camunda
-    image: tobiaszimmer/exam-camunda-server:processUpdate-0.0.3
+    image: tobiaszimmer/exam-camunda-server:development-0.0.3
     ports:
       - "8080:8080"
     environment:
@@ -66,7 +64,7 @@ services:
       CAMUNDA_ADMIN_EMAIL: test@test.dk
       CAMUNDA_ADMIN_FIRSTNAME: admin
       CAMUNDA_ADMIN_LASTNAME: admin
-
+      
 volumes:
   zookeeper_data:
   kafka_data:
