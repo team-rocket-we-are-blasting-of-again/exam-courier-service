@@ -340,10 +340,6 @@
                                     </limits>
                                 </rule>
                             </rules>
-                            <excludeRoots>
-                                <excludeRoot>target.classes.com.teamrocket.proto</excludeRoot>
-                                <excludeRoot>com.teamrocket.proto</excludeRoot>
-                            </excludeRoots>
                         </configuration>
                     </execution>
                 </executions>
@@ -351,22 +347,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.17.0</version>
+                <version>3.19.0</version>
                 <configuration>
                     <excludes>
-                        <exclude>checkstyle:/src/examples/.*</exclude>
-                        <exclude>dependencies:.*</exclude>
                         <exclude>com/teamrocket/proto/*</exclude>
-                        <exclude>com/teamrocket/proto/*</exclude>
-                        <exclude>target/classes/com/teamrocket/proto/*</exclude>
                     </excludes>
-                    <excludeRoots>
-                        <excludeRoot>target/classes/com/teamrocket/proto</excludeRoot>
-                        <excludeRoot>com/teamrocket/proto</excludeRoot>
-                        <excludeRoot>target.classes.com.teamrocket.proto</excludeRoot>
-                        <excludeRoot>com.teamrocket.proto</excludeRoot>
-                    </excludeRoots>
                     <excludeFromFailureFile>exclude-pmd.properties</excludeFromFailureFile>
+
                 </configuration>
                 <executions>
                     <execution>
@@ -374,20 +361,13 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <configuration>
-
-                            <excludeFromFailureFile>exclude-pmd.properties</excludeFromFailureFile>
-                        </configuration>
                     </execution>
-                    <!--                    <execution>
-                                            <id>cpd-check</id>
-                                            <goals>
-                                                <goal>cpd-check</goal>
-                                            </goals>
-                                            <configuration>
-                                                <excludeFromFailureFile>exclude-cpd.properties</excludeFromFailureFile>
-                                            </configuration>
-                                        </execution>-->
+                    <execution>
+                        <id>cpd-check</id>
+                        <goals>
+                            <goal>cpd-check</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
@@ -507,37 +487,18 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>3.3.0</version>
-
-
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.17.0</version>
+                <version>3.19.0</version>
                 <configuration>
                     <excludes>
-                        <exclude>*</exclude>
-                        <exclude>com.teamrocket.proto.*</exclude>
-                        <exclude>.*/com/teamrocket/proto/*.*</exclude>
-
-                        <exclude>com.teamrocket.proto</exclude>
-                        <exclude>com.teamrocket.proto.</exclude>
-                        <exclude>com.teamrocket.proto.CreateUserResponse</exclude>
-                        <exclude>com.teamrocket.proto.CreateUserRequestOrBuilder</exclude>
-                        <exclude>com.teamrocket.proto.CreateUserRequest</exclude>
-                        <exclude>com.teamrocket.proto.Courier</exclude>
+                        <exclude>com/teamrocket/proto/*</exclude>
+                        <exclude>com/teamrocket/listeners/WebSocketEventListener*</exclude>
                     </excludes>
-                    <excludes>*</excludes>
-                    <excludes>*.*</excludes>
-                    <excludes>target/classes/proto</excludes>
-                    <excludeFromFailureFile>exclude-pmd.properties</excludeFromFailureFile>
-                    <excludeRoots>
-                        <excludeRoot>target.classes.com.teamrocket.proto</excludeRoot>
-                        <excludeRoot>com.teamrocket.proto</excludeRoot>
-                    </excludeRoots>
                 </configuration>
             </plugin>
-
         </plugins>
     </reporting>
 
