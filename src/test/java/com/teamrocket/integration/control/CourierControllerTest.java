@@ -78,7 +78,12 @@ public class CourierControllerTest {
     @Test
     void registerUserWithUniqEmail() throws Exception {
 
-        Courier courier = Courier.builder().firstName("Magda").lastName("W").email("mail@mail.dk").phone("789789789").build();
+        Courier courier = Courier.builder()
+                .firstName("Magda")
+                .lastName("W")
+                .email("mail@mail.dk")
+                .phone("789789789")
+                .build();
 
         String c = GSON.toJson(courier);
         MockHttpServletResponse response = mvc.perform(post("/register")
@@ -92,8 +97,17 @@ public class CourierControllerTest {
     @Test
     void registerUserWithExistingEmail() throws Exception {
 
-        Courier courier = Courier.builder().firstName("Magda").lastName("W").email("mail@mail.dk").phone("7878").build();
-        courierRepository.save(Courier.builder().firstName("Magda").lastName("W").email("mail@mail.dk").phone("787979").build());
+        Courier courier = Courier.builder()
+                .firstName("Magda")
+                .lastName("W")
+                .email("mail@mail.dk")
+                .phone("7878")
+                .build();
+        courierRepository.save(Courier.builder()
+                .firstName("Magda")
+                .lastName("W")
+                .email("mail@mail.dk")
+                .phone("787979").build());
         String c = GSON.toJson(courier);
         MockHttpServletResponse response = mvc.perform(post("/register")
                         .content(c)
