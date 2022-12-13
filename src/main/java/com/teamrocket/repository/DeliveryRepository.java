@@ -2,7 +2,6 @@ package com.teamrocket.repository;
 
 import com.teamrocket.entity.Delivery;
 import com.teamrocket.enums.DeliveryStatus;
-import org.hibernate.criterion.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
