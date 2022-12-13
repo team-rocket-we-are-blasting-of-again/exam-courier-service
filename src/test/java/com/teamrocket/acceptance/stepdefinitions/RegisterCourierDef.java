@@ -14,6 +14,8 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class RegisterCourierDef {
@@ -24,6 +26,7 @@ public class RegisterCourierDef {
     private String lastName = "WAWRZAK";
     private String email = "my@mail.com";
     private String phone = "0700";
+    private String password = "pass";
     private RegisterCourierRequest courierEM;
     private RegisterCourierRequest courierPH;
     private Exception em;
@@ -45,7 +48,14 @@ public class RegisterCourierDef {
 
     @Given("a Courier with first name, last name, uniq email and uniq phone")
     public void a_courier_with_first_name_last_name_uniq_email_and_uniq_phone() {
-        courierRequest = RegisterCourierRequest.builder().firstName(firstName).lastName(lastName).email(email).phone(phone).build();
+        courierRequest = RegisterCourierRequest
+                .builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .phone(phone)
+                .password(password)
+                .build();
         System.out.println("a magda" + userID);
     }
 
@@ -53,7 +63,7 @@ public class RegisterCourierDef {
     @When("Courier registers in the Service")
     public void courier_registers_in_the_service() {
         userID = 888;
-        when(authClient.registerCourierUser(ArgumentMatchers.any())).thenReturn(userID);
+        when(authClient.registerCourierUser(anyString(),anyInt(),ArgumentMatchers.anyString())).thenReturn(userID);
 
         courier = courierService.registerCourier(courierRequest);
         System.out.println("#REGISTERED COURIER");
@@ -62,12 +72,24 @@ public class RegisterCourierDef {
 
     @Given("a Courier with existing email")
     public void a_courier_with_existing_email() {
-        courierEM = RegisterCourierRequest.builder().firstName("").lastName("").email(email).phone("phone1").build();
+        courierEM = RegisterCourierRequest.builder()
+                .firstName("")
+                .lastName("")
+                .email(email)
+                .phone("phone1")
+                .build();
     }
 
     @Given("a Courier with existing phone")
     public void a_courier_with_existing_phone() {
-        courierPH = RegisterCourierRequest.builder().firstName("").lastName("").email("mail987").phone(phone).build();
+        courierPH = RegisterCourierRequest
+                .builder()
+                .firstName("")
+                .lastName("")
+                .email("mail987")
+                .phone(phone)
+                .password(password)
+                .build();
     }
 
     @Then("New Courier is created with first name last name, email, phone")
@@ -90,9 +112,15 @@ public class RegisterCourierDef {
     @When("Courier registers in the Service with invalid phone")
     public void courier_registers_in_the_service_with_invalid_phone() {
         userID = 889;
-        when(authClient.registerCourierUser(ArgumentMatchers.any())).thenReturn(userID);
+        when(authClient.registerCourierUser(anyString(),anyInt(),ArgumentMatchers.anyString())).thenReturn(userID);
 
-        courierPH = RegisterCourierRequest.builder().firstName(firstName).lastName(lastName).email("phonemail").phone(phone).build();
+        courierPH = RegisterCourierRequest.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .email("phonemail")
+                .phone(phone)
+                .password(password)
+                .build();
         courierService.registerCourier(courierPH);
         try {
             courierService.registerCourier(courierPH);
@@ -104,7 +132,7 @@ public class RegisterCourierDef {
     @When("Courier registers in the Service with invalid email")
     public void courier_registers_in_the_service_with_invalid_email() {
         userID = 900;
-        when(authClient.registerCourierUser(ArgumentMatchers.any())).thenReturn(userID);
+        when(authClient.registerCourierUser(anyString(),anyInt(),ArgumentMatchers.anyString())).thenReturn(userID);
 
         courierEM = RegisterCourierRequest.builder().firstName(firstName).lastName(lastName).email(email).phone(phone).build();
         courierService.registerCourier(courierEM);

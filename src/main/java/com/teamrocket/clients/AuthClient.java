@@ -1,6 +1,5 @@
 package com.teamrocket.clients;
 
-import com.teamrocket.entity.Courier;
 import com.teamrocket.proto.CreateUserRequest;
 import com.teamrocket.proto.CreateUserResponse;
 import com.teamrocket.proto.Role;
@@ -17,15 +16,16 @@ public class AuthClient {
     @Autowired
     private UserGrpc.UserBlockingStub userBlockingStub;
 
-    public int registerCourierUser(Courier courier) {
+    public int registerCourierUser(String email, int id, String password) {
         LOGGER.info("gRPC Channel {} ", userBlockingStub.getChannel());
 
         CreateUserResponse response = userBlockingStub.createUser(
                 CreateUserRequest
                         .newBuilder()
                         .setRole(Role.COURIER)
-                        .setRoleId(courier.getId())
-                        .setEmail(courier.getEmail())
+                        .setEmail(email)
+                        .setRoleId(id)
+                        .setPassword(password)
                         .build());
         return response.getId();
     }

@@ -44,11 +44,7 @@ class AuthClientTest {
 
     @Test
     void registerCourierUser() {
-        Courier courier = Courier.builder()
-                .id(789789)
-                .email("mail")
-                .build();
 
-        assertEquals(userID, sut.registerCourierUser(courier));
+        assertEquals(userID, sut.registerCourierUser("email",-3,"password"));
     }
 }

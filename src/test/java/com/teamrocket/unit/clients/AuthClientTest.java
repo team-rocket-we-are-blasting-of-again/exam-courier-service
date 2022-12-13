@@ -1,7 +1,6 @@
 package com.teamrocket.unit.clients;
 
 import com.teamrocket.clients.AuthClient;
-import com.teamrocket.entity.Courier;
 import com.teamrocket.proto.CreateUserRequest;
 import com.teamrocket.proto.CreateUserResponse;
 import com.teamrocket.proto.UserGrpc;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -46,20 +44,8 @@ class AuthClientTest {
 
     @Test
     void registerCourierUserTest() {
-        assertEquals(userID, sut.registerCourierUser(Courier.builder().id(-2).email("mail").build()));
+        assertEquals(userID, sut.registerCourierUser("email", -2, "password"));
     }
 
-    @Test
-    void registerCourierUserWithNoEmailTest() {
-        assertThrows(NullPointerException.class, () -> {
-            sut.registerCourierUser(Courier.builder().id(-2).build());
-        }, "NullPointerException was expected");
-    }
 
-    @Test
-    void registerCourierUserWithNoIdTest() {
-        assertThrows(NullPointerException.class, () -> {
-            sut.registerCourierUser(Courier.builder().email("sas").build());
-        }, "NullPointerException was expected");
-    }
 }

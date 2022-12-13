@@ -23,6 +23,8 @@ import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -70,7 +72,7 @@ class CourierServiceTest {
                 .build();
 
         when(kafkaMock.send(ArgumentMatchers.anyString(), ArgumentMatchers.any())).thenReturn(null);
-        when(authClientMock.registerCourierUser(courier)).thenReturn(userID);
+        when(authClientMock.registerCourierUser(anyString(),anyInt(),ArgumentMatchers.anyString())).thenReturn(userID);
 
     }
 

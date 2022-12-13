@@ -39,7 +39,7 @@ public class CourierService implements ICourierService {
         try {
             Courier courier = new Courier(request);
             courier = courierRepository.save(courier);
-            int userId = authClient.registerCourierUser(courier);
+            int userId = authClient.registerCourierUser(courier.getEmail(),courier.getId(),request.getPassword());
             courier.setUserId(userId);
             courier = courierRepository.save(courier);
             CourierDTO registeredCourier = new CourierDTO(courier);

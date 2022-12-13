@@ -18,7 +18,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +43,7 @@ public class CourierServiceTest {
 
     @BeforeEach
     void setUp() {
-        when(authClient.registerCourierUser(ArgumentMatchers.any())).thenReturn(userID);
+        when(authClient.registerCourierUser(anyString(),anyInt(),ArgumentMatchers.anyString())).thenReturn(userID);
         when(kafkaTemplate.send(ArgumentMatchers.anyString(),any())).thenReturn(null);
 
     }

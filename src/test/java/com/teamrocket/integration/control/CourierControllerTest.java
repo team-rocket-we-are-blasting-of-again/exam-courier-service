@@ -27,7 +27,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -71,8 +71,8 @@ public class CourierControllerTest {
                 .build();
         headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        when(authClient.registerCourierUser(any())).thenReturn(888);
-        when(kafkaTemplate.send(ArgumentMatchers.anyString(),any())).thenReturn(null);
+        when(authClient.registerCourierUser(anyString(), anyInt(), ArgumentMatchers.anyString())).thenReturn(888);
+        when(kafkaTemplate.send(ArgumentMatchers.anyString(), any())).thenReturn(null);
     }
 
     @Test

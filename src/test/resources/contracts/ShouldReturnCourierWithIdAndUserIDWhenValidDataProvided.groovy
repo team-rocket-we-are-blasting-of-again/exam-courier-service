@@ -13,7 +13,8 @@ Contract.make {
                     firstName : "Magdalena",
                     lastName: "Wawrzak",
                     email: "mw@mail.com",
-                    phone: "700800"
+                    phone: "700800",
+                    password: "password"
             )
         }
     }
