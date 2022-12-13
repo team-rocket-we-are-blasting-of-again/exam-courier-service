@@ -12,7 +12,8 @@ Contract.make {
             body(
                     firstName : "Anna",
                     lastName: "Panna",
-                    email: "used@mail.com"
+                    email: "used@mail.com",
+                    password: "password"
             )
         }
     }

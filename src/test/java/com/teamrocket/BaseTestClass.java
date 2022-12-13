@@ -1,9 +1,9 @@
 package com.teamrocket;
 
+import com.teamrocket.clients.AuthClient;
 import com.teamrocket.control.CourierController;
 import com.teamrocket.entity.Courier;
 import com.teamrocket.repository.CourierRepository;
-import com.teamrocket.clients.AuthClient;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -19,6 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -39,10 +41,16 @@ public class BaseTestClass {
 
     @Before
     public void setup() {
-        when(authClient.registerCourierUser(ArgumentMatchers.any())).thenReturn(888);
-        when(kafkaTemplate.send(ArgumentMatchers.any(),ArgumentMatchers.any())).thenReturn(null);
+        when(authClient.registerCourierUser(anyString(), anyInt(), ArgumentMatchers.anyString())).thenReturn(888);
+        when(kafkaTemplate.send(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(null);
         courierRepository.deleteAll();
-        courierRepository.save(Courier.builder().firstName("Anna").lastName("Panna").email("used@mail.com").userId(999999999).phone("contract").build());
+        courierRepository.save(Courier.builder()
+                .firstName("Anna")
+                .lastName("Panna")
+                .email("used@mail.com")
+                .userId(999999999)
+                .phone("contract")
+                .build());
         StandaloneMockMvcBuilder standaloneMockMvcBuilder
                 = MockMvcBuilders.standaloneSetup(courierController);
         RestAssuredMockMvc.standaloneSetup(standaloneMockMvcBuilder);

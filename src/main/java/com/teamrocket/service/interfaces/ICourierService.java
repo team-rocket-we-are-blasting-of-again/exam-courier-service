@@ -8,6 +8,4 @@ public interface ICourierService {
 
     CourierDTO registerCourier(RegisterCourierRequest courier) throws ResourceException;
 
-    String chooseArea(String area);
-
 }
