@@ -25,7 +25,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
@@ -76,7 +78,7 @@ class DeliveryServiceTest {
     void setUp() {
         delivery = Delivery
                 .builder()
-                .courierId(111)
+                .courierId(courierId)
                 .status(DeliveryStatus.ON_THE_WAY)
                 .orderId(orderId)
                 .restaurantName(restName)
@@ -95,10 +97,12 @@ class DeliveryServiceTest {
                 .customerPhone(custPhone)
                 .customerPhone(custPhone)
                 .build();
-
+        List<Delivery> deliveries = new ArrayList();
+        deliveries.add(delivery);
         when(deliveryRepository.findAllByAreaIdAndStatus(area, DeliveryStatus.NEW)).thenReturn(new ArrayList<Delivery>());
+        when(deliveryRepository.findAllByOrderIdAndStatus(orderId, DeliveryStatus.NEW)).thenReturn(deliveries);
         when(deliveryRepository.findById(deliveryId)).thenReturn(Optional.of(delivery));
-        when(deliveryRepository.save(delivery)).thenReturn((delivery));
+        when(deliveryRepository.save(any())).thenReturn((delivery));
         doNothing().when(simpMessagingTemplate).convertAndSend(ArgumentMatchers.anyString(), ArgumentMatchers.anyCollection());
         when(kafkaTemplate.send(eq(Topic.ORDER_CLAIMED.toString()), ArgumentMatchers.any())).thenReturn(null);
         when(kafkaTemplate.send(eq(Topic.ORDER_DELIVERED.toString()), ArgumentMatchers.any())).thenReturn(null);
@@ -135,9 +139,31 @@ class DeliveryServiceTest {
 
     @Test
     void saveAndPublishNewDeliveryTask() {
-        DeliveryTask deliveryTask =
-        sut.saveAndPublishNewDeliveryTask()
+        DeliveryTask deliveryTask = DeliveryTask
+                .builder()
+                .orderId(orderId)
+                .restaurantName(restName)
+                .restaurantAddressId(restAddId)
+                .areaId(area)
+                .pickupTime(pickupTime)
+                .build();
 
+        deliveryTask = sut.saveAndPublishNewDeliveryTask(deliveryTask);
+        assertTrue("Delivery task should have data of delivery saved in db",
+                deliveryTask.getAreaId().equals(area) &&
+                        deliveryTask.getOrderId() == orderId &&
+                        deliveryTask.getDropOffAddressId() == dropAddId &&
+                        deliveryTask.getPickupTime() == pickupTime &&
+                        deliveryTask.getCustomerName().equals(custName) &&
+                        deliveryTask.getRestaurantName().equals(restName) &&
+                        deliveryTask.getCustomerPhone().equals(custPhone));
+
+        verify(simpMessagingTemplate, times(1))
+                .convertAndSend(ArgumentMatchers.anyString(), ArgumentMatchers.anyCollection());
+
+        verify(deliveryRepository, times(1)).save(any());
+        verify(deliveryRepository, times(1))
+                .findAllByAreaIdAndStatus(area, DeliveryStatus.NEW);
     }
 
     @Test
@@ -151,9 +177,27 @@ class DeliveryServiceTest {
 
     @Test
     void handleOrderReadyEvent() {
+        sut.handleOrderReadyEvent(orderId);
+        verify(deliveryRepository, times(1))
+                .findAllByOrderIdAndStatus(orderId, DeliveryStatus.NEW);
     }
 
     @Test
     void handleDropOff() {
+        DeliveryRequest request = new DeliveryRequest(deliveryId);
+        DeliveryTask deliveryTask = sut.handleDropOff(request, courierId);
+
+        assertTrue("Delivery task should have data of delivery saved in db",
+                deliveryTask.getAreaId().equals(area) &&
+                        deliveryTask.getOrderId() == orderId &&
+                        deliveryTask.getDropOffAddressId() == dropAddId &&
+                        deliveryTask.getPickupTime() == pickupTime &&
+                        deliveryTask.getCustomerName().equals(custName) &&
+                        deliveryTask.getRestaurantName().equals(restName) &&
+                        deliveryTask.getCustomerPhone().equals(custPhone));
+
+        verify(deliveryRepository, times(1)).save(any());
+        verify(deliveryRepository, times(1))
+                .findById(deliveryId);
     }
 }
