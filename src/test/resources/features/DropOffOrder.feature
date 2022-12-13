@@ -8,3 +8,4 @@ Feature: Courier Drops off picked order.
     Given A courier and a delivery task that has been picked up by that courier
     When Courier drops of the order of that task
     Then Delivery status is sat to COMPLETED and system is notified
+    And DeliveryTask has customer data, restaurant data and order id

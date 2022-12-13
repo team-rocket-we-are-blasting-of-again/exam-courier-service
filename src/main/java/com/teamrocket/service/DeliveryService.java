@@ -195,7 +195,7 @@ public class DeliveryService implements IDeliveryService {
     private String buildTaskVariables(String workerId, DeliveryTask deliveryTask) {
         DeliveryTaskHolder taskHolder = new DeliveryTaskHolder(deliveryTask.toJsonString());
         OrderIdHolder orderIdHolder = new OrderIdHolder(deliveryTask.getOrderId());
-        Variables variables = new Variables(taskHolder,orderIdHolder);
+        Variables variables = new Variables(taskHolder, orderIdHolder);
         TaskVariables taskVariables = new TaskVariables(workerId, variables);
         return GSON.toJson(taskVariables, TaskVariables.class);
     }
