@@ -31,19 +31,7 @@ jobs:
       - name: Setup variables
         run: |
           sudo apt install libxml-xpath-perl -y
-          get_xpath_value() {
-            xml=$1
-            path=$2
-            if [ -f $xml ]; then
-              value=$(xpath -e $path $xml | perl -pe 's/^.+?\>//; s/\<.+?$//;' | awk '{print tolower($0)}')
-              echo -n $value
-            else
-              echo 'Invalid xml file "$xml"!'
-              exit 1;
-            fi
-          }
-          pom_xml='pom.xml'
-          version=$(get_xpath_value $pom_xml 'project/version')
+          version=$(. scripts/get_xpath_value.sh 'pom.xml' 'project/version')
           lower_case_image=$(echo $IMAGE_NAME | awk '{print tolower($0)}')
           echo "project_version=$version" >> $GITHUB_ENV
           echo "lower_case_image=$lower_case_image" >> $GITHUB_ENV
@@ -55,8 +43,10 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         run: |
           echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
+          name=$(. scripts/get_xpath_value.sh 'pom.xml' 'project/name')
+          jar_file="target/$name-$project_version.jar"
           image="$lower_case_image:$branch_name-$project_version"
-          docker build --tag "$image" .
+          docker build --build-arg jar_file=$jar_file --tag "$image" .
           docker push "$image"
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
