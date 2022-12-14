@@ -238,14 +238,16 @@ class DeliveryServiceTest {
     void handleOrderReadyEvent_throwsNoSuchElementException() {
         assertThrows(NoSuchElementException.class, () -> {
             sut.handleOrderReadyEvent(-777);
-        }, "No delivery task for order id -777");
+        }, "A delivery task with order id -777 was found, but was not expected");
     }
 
     @Test
     void handleOrderReadyEvent_throwsResourceException() {
         assertThrows(ResourceException.class, () -> {
             sut.handleOrderReadyEvent(multipleDeliveriesId);
-        }, "More than one delivery for given order id " + multipleDeliveriesId);
+        }, "There was not more than one delivery for given order id "
+                + multipleDeliveriesId
+                + ", but expected two");
     }
 
     @Test
@@ -272,7 +274,7 @@ class DeliveryServiceTest {
         DeliveryRequest request = new DeliveryRequest(deliveryId);
         assertThrows(ResourceException.class, () -> {
             sut.handleDropOff(request, courierId - 100);
-        }, "Courier id on deliver does not much provided courier id");
+        }, "Courier id on deliver should not much provided courier id but it does");
     }
 
     @Test
@@ -282,11 +284,7 @@ class DeliveryServiceTest {
         DeliveryRequest request = new DeliveryRequest(deliveryId);
         assertThrows(ResourceException.class, () -> {
             sut.handleDropOff(request, courierId);
-        }, "Delivery Status is not ON_THE_WAY");
+        }, "Delivery Status should expected not to be ON_THE_WAY");
     }
 
-
-    @Test
-    void buildTaskVariables() {
-    }
 }
