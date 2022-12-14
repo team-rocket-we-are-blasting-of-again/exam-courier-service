@@ -18,7 +18,6 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@TestPropertySource(locations = {"classpath:applicationtest.properties"})
 class CustomerClientTest {
 
     @MockBean
