@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.teamrocket.clients.AuthClient;
 import com.teamrocket.control.CourierController;
 import com.teamrocket.entity.Courier;
+import com.teamrocket.model.courier.RegisterCourierRequest;
 import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.service.CourierService;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +44,7 @@ public class CourierControllerTest {
 
     @Autowired
     private CourierRepository courierRepository;
-    @Mock
+    @MockBean
     private AuthClient authClient;
     @MockBean
     KafkaTemplate kafkaTemplate;
@@ -78,11 +79,12 @@ public class CourierControllerTest {
     @Test
     void registerUserWithUniqEmail() throws Exception {
 
-        Courier courier = Courier.builder()
+        RegisterCourierRequest courier = RegisterCourierRequest.builder()
                 .firstName("Magda")
                 .lastName("W")
                 .email("mail@mail.dk")
                 .phone("789789789")
+                .password("password")
                 .build();
 
         String c = GSON.toJson(courier);
