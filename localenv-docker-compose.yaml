@@ -71,6 +71,42 @@ services:
     ports:
       - '5434:5432'
 
+  customer-postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: customer
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    ports:
+      - "5452:5432"
+    restart: unless-stopped
+
+  auth-postgres:
+    image: postgres:15.1-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=auth
+
+  auth-service:
+    depends_on:
+      - auth-postgres
+    image: tobiaszimmer/exam_auth_service:main-0.1.0
+    ports:
+      - "8000:8000"
+      - "9000:50051"
+    environment:
+      POSTGRES_HOST: auth-postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DATABASE: auth
+      TOKEN_DURATION_HOURS: 12
+      HAS_GATEWAY: "false"
+      GRPC_ADDRESS: "[::1]:50051"
+
+
 volumes:
   zookeeper_data:
   kafka_data:
