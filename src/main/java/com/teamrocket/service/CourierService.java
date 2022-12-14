@@ -8,7 +8,6 @@ import com.teamrocket.model.courier.CourierDTO;
 import com.teamrocket.model.courier.RegisterCourierRequest;
 import com.teamrocket.repository.CourierRepository;
 import com.teamrocket.service.interfaces.ICourierService;
-import io.grpc.StatusRuntimeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -47,10 +46,10 @@ public class CourierService implements ICourierService {
             LOGGER.error(e.getMessage());
             throw new ResourceException("Courier could not be saved due to an incorrect data");
         }
-            int userId = authClient.registerCourierUser(courier.getEmail(), courier.getId(), request.getPassword());
-            LOGGER.info("Registered courier with userId {}", userId);
-            courier.setUserId(userId);
-            courier = courierRepository.save(courier);
+        int userId = authClient.registerCourierUser(courier.getEmail(), courier.getId(), request.getPassword());
+        LOGGER.info("Registered courier with userId {}", userId);
+        courier.setUserId(userId);
+        courier = courierRepository.save(courier);
 
         CourierDTO registeredCourier = new CourierDTO(courier);
         LOGGER.info("Saved courier {}", courier);

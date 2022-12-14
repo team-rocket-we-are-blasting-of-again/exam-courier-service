@@ -57,7 +57,7 @@ class CourierServiceTest {
 
     @BeforeEach
     void setUp() {
-       registerRequest = RegisterCourierRequest.builder()
+        registerRequest = RegisterCourierRequest.builder()
                 .email(email)
                 .firstName(fname)
                 .lastName(lname)
@@ -72,7 +72,7 @@ class CourierServiceTest {
                 .build();
 
         when(kafkaMock.send(ArgumentMatchers.anyString(), ArgumentMatchers.any())).thenReturn(null);
-        when(authClientMock.registerCourierUser(anyString(),anyInt(),ArgumentMatchers.anyString())).thenReturn(userID);
+        when(authClientMock.registerCourierUser(anyString(), anyInt(), ArgumentMatchers.anyString())).thenReturn(userID);
 
     }
 
