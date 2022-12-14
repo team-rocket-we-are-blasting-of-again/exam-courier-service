@@ -47,7 +47,6 @@ public class CourierService implements ICourierService {
             throw new ResourceException("Courier could not be saved due to an incorrect data");
         }
         int userId = authClient.registerCourierUser(courier.getEmail(), courier.getId(), request.getPassword());
-        LOGGER.info("Registered courier with userId {}", userId);
         courier.setUserId(userId);
         courier = courierRepository.save(courier);
 
