@@ -39,6 +39,7 @@ public class CourierService implements ICourierService {
     public CourierDTO registerCourier(RegisterCourierRequest request) throws ResourceException {
         LOGGER.info("New register courier request {}", request);
         Courier courier = new Courier(request);
+        courier.setUserId(-1);
         try {
             courier = courierRepository.save(courier);
 

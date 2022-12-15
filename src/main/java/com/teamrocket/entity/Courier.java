@@ -31,7 +31,7 @@ public class Courier {
     @Column(nullable = false, unique = true)
     private String phone;
 
-    @Column(nullable = true, unique = true)
+    @Column(unique = true)
     private Integer userId;
 
     private boolean online;

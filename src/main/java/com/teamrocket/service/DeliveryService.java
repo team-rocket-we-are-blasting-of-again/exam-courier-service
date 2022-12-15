@@ -37,13 +37,13 @@ public class DeliveryService implements IDeliveryService {
     private DeliveryRepository deliveryRepository;
 
     @Autowired
-    CamundaRepo camundaRepo;
+    private CamundaRepo camundaRepo;
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     @Autowired
-    CustomerClient customerClient;
+    private CustomerClient customerClient;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -103,8 +103,8 @@ public class DeliveryService implements IDeliveryService {
         }
         if (readyToPickup.size() > 1) {
             LOGGER.warn("More than one delivery for given order id {} ", orderId);
-            throw new ResourceException("Delivery could not be saved - Delivery for order id "
-                    + orderId + " already exists");
+            throw new ResourceException("More than one delivery for order id "
+                    + orderId);
         }
         Delivery delivery = readyToPickup.get(0);
         simpMessagingTemplate
