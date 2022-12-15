@@ -201,4 +201,11 @@ public class DeliveryService implements IDeliveryService {
     }
 
 
+    public List<DeliveryTask> getClaimedTasks(int courierId) {
+        List<DeliveryTask> claimedTasks = new ArrayList<>();
+        List<Delivery> claimedDeliveries = deliveryRepository.findAllByCourierIdAndStatus(courierId,DeliveryStatus.ON_THE_WAY);
+        claimedDeliveries.forEach(d->claimedTasks.add(new DeliveryTask(d)));
+        return claimedTasks;
+
+    }
 }
