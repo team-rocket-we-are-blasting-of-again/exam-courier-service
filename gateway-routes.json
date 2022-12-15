@@ -11,6 +11,7 @@
       {
         "path": "/courier/register",
         "method": "NONE",
+        "httpMethod": "POST",
         "rolesAllowed": []
       },
       {

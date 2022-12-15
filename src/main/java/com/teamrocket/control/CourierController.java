@@ -39,4 +39,10 @@ public class CourierController {
                                        @RequestHeader("role_id") int courierId) {
         return ResponseEntity.ok(deliveryService.handleDropOff(request, courierId));
     }
+
+    @GetMapping("claimed")
+    public ResponseEntity claimed(
+            @RequestHeader("role_id") int courierId) {
+        return ResponseEntity.ok(deliveryService.getClaimedTasks(courierId));
+    }
 }
