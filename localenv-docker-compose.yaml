@@ -98,7 +98,7 @@ services:
     depends_on:
       - auth-postgres
       - gateway
-    image: tobiaszimmer/exam_auth_service:main-0.1.0
+    image: tobiaszimmer/exam_auth_service:main-0.1.2
     ports:
       - "8000:8000"
       - "9000:50051"
@@ -201,7 +201,7 @@ services:
       - courier-db
       - exam-camunda-service
       - gateway
-    image: tobiaszimmer/exam-courier-service:test_frontend-1.0.0-RELEASE
+    image: tobiaszimmer/exam-courier-service:routs_docker-1.0.0-RELEASE
     environment:
       GATEWAY_USERNAME: "gate_us"
       GATEWAY_PASSWORD: "gate_ps"
