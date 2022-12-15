@@ -17,6 +17,10 @@
         <java.version>17</java.version>
         <cucumber.version>7.7.0</cucumber.version>
         <grpc.version>1.49.2</grpc.version>
+        <selenium.version>4.7.2</selenium.version>
+        <webdrivermanager.version>5.0.3</webdrivermanager.version>
+        <junit.jupiter.version>5.8.2</junit.jupiter.version>
+        <junit.platform.version>1.8.2</junit.platform.version>
     </properties>
 
     <!-- Dependencies -->
@@ -163,17 +167,53 @@
             <scope>test</scope>
         </dependency>
 
+
+        <!--Selenium-->
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-suite</artifactId>
-            <version>1.9.0</version>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <!--Webdriver Manager-->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+        </dependency>
+
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.junit.platform</groupId>-->
+        <!--            <artifactId>junit-platform-suite</artifactId>-->
+        <!--            <version>1.9.0</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>${junit.platform.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>${junit.platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -185,12 +225,6 @@
             <version>1.0.2</version>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.pitest</groupId>-->
-        <!--            <artifactId>pitest-parent</artifactId>-->
-        <!--            <version>1.9.6</version>-->
-        <!--            <type>pom</type>-->
-        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.pitest</groupId>
@@ -208,6 +242,14 @@
             <artifactId>mockito-inline</artifactId>
             <version>4.3.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
         </dependency>
 
 
