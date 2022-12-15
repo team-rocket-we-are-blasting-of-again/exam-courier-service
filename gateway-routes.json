@@ -9,6 +9,11 @@
         "rolesAllowed": []
       },
       {
+        "path": "/courier/register",
+        "method": "NONE",
+        "rolesAllowed": []
+      },
+      {
         "path": "/courier/**",
         "method": "BEARER",
         "rolesAllowed": [
