@@ -10,4 +10,6 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Integer> {
     List<Delivery> findAllByAreaIdAndStatus(String areaId, DeliveryStatus status);
 
     List<Delivery> findAllByOrderIdAndStatus(int orderId, DeliveryStatus status);
+
+    List<Delivery> findAllByCourierIdAndStatus(int courierId, DeliveryStatus status);
 }
