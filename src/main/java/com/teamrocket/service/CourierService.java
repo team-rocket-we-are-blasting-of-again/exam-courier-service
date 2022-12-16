@@ -17,6 +17,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -33,23 +35,25 @@ public class CourierService implements ICourierService {
     private KafkaTemplate kafkaTemplate;
 
     @Override
+    @Transactional
     public CourierDTO registerCourier(RegisterCourierRequest request) throws ResourceException {
         LOGGER.info("New register courier request {}", request);
-
+        Courier courier = new Courier(request);
+        courier.setUserId(-1);
         try {
-            Courier courier = new Courier(request);
             courier = courierRepository.save(courier);
-            int userId = authClient.registerCourierUser(courier.getEmail(),courier.getId(),request.getPassword());
-            courier.setUserId(userId);
-            courier = courierRepository.save(courier);
-            CourierDTO registeredCourier = new CourierDTO(courier);
-            kafkaTemplate.send(Topic.NEW_COURIER.toString(), registeredCourier);
-            return registeredCourier;
+
         } catch (DataIntegrityViolationException e) {
             LOGGER.error(e.getMessage());
             throw new ResourceException("Courier could not be saved due to an incorrect data");
         }
+        int userId = authClient.registerCourierUser(courier.getEmail(), courier.getId(), request.getPassword());
+        courier.setUserId(userId);
+        courier = courierRepository.save(courier);
+
+        CourierDTO registeredCourier = new CourierDTO(courier);
+        LOGGER.info("Saved courier {}", courier);
+        kafkaTemplate.send(Topic.NEW_COURIER.toString(), registeredCourier);
+        return registeredCourier;
     }
-
-
 }

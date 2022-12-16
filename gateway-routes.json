@@ -9,6 +9,12 @@
         "rolesAllowed": []
       },
       {
+        "path": "/courier/register",
+        "method": "NONE",
+        "httpMethod": "POST",
+        "rolesAllowed": []
+      },
+      {
         "path": "/courier/**",
         "method": "BEARER",
         "rolesAllowed": [

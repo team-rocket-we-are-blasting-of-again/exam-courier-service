@@ -37,13 +37,13 @@ public class DeliveryService implements IDeliveryService {
     private DeliveryRepository deliveryRepository;
 
     @Autowired
-    CamundaRepo camundaRepo;
+    private CamundaRepo camundaRepo;
 
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     @Autowired
-    CustomerClient customerClient;
+    private CustomerClient customerClient;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -103,8 +103,8 @@ public class DeliveryService implements IDeliveryService {
         }
         if (readyToPickup.size() > 1) {
             LOGGER.warn("More than one delivery for given order id {} ", orderId);
-            throw new ResourceException("Delivery could not be saved - Delivery for order id "
-                    + orderId + " already exists");
+            throw new ResourceException("More than one delivery for order id "
+                    + orderId);
         }
         Delivery delivery = readyToPickup.get(0);
         simpMessagingTemplate
@@ -195,10 +195,16 @@ public class DeliveryService implements IDeliveryService {
     private String buildTaskVariables(String workerId, DeliveryTask deliveryTask) {
         DeliveryTaskHolder taskHolder = new DeliveryTaskHolder(deliveryTask.toJsonString());
         OrderIdHolder orderIdHolder = new OrderIdHolder(deliveryTask.getOrderId());
-        Variables variables = new Variables(taskHolder,orderIdHolder);
+        Variables variables = new Variables(taskHolder, orderIdHolder);
         TaskVariables taskVariables = new TaskVariables(workerId, variables);
         return GSON.toJson(taskVariables, TaskVariables.class);
     }
 
+    public List<DeliveryTask> getClaimedTasks(int courierId) {
+        List<DeliveryTask> claimedTasks = new ArrayList<>();
+        List<Delivery> claimedDeliveries = deliveryRepository.findAllByCourierIdAndStatus(courierId, DeliveryStatus.ON_THE_WAY);
+        claimedDeliveries.forEach(d -> claimedTasks.add(new DeliveryTask(d)));
+        return claimedTasks;
+    }
 
 }

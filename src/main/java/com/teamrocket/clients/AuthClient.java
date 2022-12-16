@@ -27,6 +27,9 @@ public class AuthClient {
                         .setRoleId(id)
                         .setPassword(password)
                         .build());
+
+        LOGGER.info("Registered user with userId {}", response.getId());
+
         return response.getId();
     }
 }
