@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.teamrocket</groupId>
     <artifactId>courier-service</artifactId>
-    <version>1.1.0-RELEASE</version>
+    <version>1.1.3-RELEASE</version>
     <name>courier-service</name>
     <description>manages courier related operations</description>
     <properties>
