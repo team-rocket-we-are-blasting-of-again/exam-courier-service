@@ -175,7 +175,7 @@ services:
       - restaurant_db
       - camunda
       - gateway
-    image: tobiaszimmer/exam-restaurant-service:feature-fix-1.0.8-release
+    image: tobiaszimmer/exam-restaurant-service:feature-fix-1.0.10-release
     ports:
       - "7799:8080"
     environment:
@@ -216,7 +216,7 @@ services:
       - courier-db
       - camunda
       - gateway
-    image: tobiaszimmer/exam-courier-service:cors-1.1.5-RELEASE
+    image: tobiaszimmer/exam-courier-service:cors-1.1.6-RELEASE
     ports:
       - "7788:8080"
     environment:
