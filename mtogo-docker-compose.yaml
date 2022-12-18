@@ -175,7 +175,9 @@ services:
       - restaurant_db
       - camunda
       - gateway
-    image: tobiaszimmer/exam-restaurant-service:main-1.0.1-release
+    image: tobiaszimmer/exam-restaurant-service:feature-fix-1.0.8-release
+    ports:
+      - "7799:8080"
     environment:
       RESTAURANT_SERVICE_DB : "jdbc:postgresql://restaurant_db:5432/restaurants"
       RESTAURANT_DB_USER: "postgres"
@@ -194,7 +196,7 @@ services:
       - customer-postgres
       - camunda
       - gateway
-    image : tobiaszimmer/exam-customer-service:kafka_fail-1.0.4-RELEASE
+    image : tobiaszimmer/exam-customer-service:kafka_fail-1.0.8-RELEASE
     environment:
       SERVER_PORT: "8012"
       CAMUNDA_ENGINE_REST: "http://camunda:8080/engine-rest/"
@@ -214,7 +216,9 @@ services:
       - courier-db
       - camunda
       - gateway
-    image: tobiaszimmer/exam-courier-service:cors-1.1.3-RELEASE
+    image: tobiaszimmer/exam-courier-service:cors-1.1.4-RELEASE
+    ports:
+      - "7788:8080"
     environment:
       GATEWAY_USERNAME: "gate_us"
       GATEWAY_PASSWORD: "gate_ps"

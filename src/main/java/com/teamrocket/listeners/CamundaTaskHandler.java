@@ -41,7 +41,6 @@ public class CamundaTaskHandler implements ExternalTaskHandler {
 
     @Override
     public void execute(ExternalTask externalTask, ExternalTaskService externalTaskService) {
-        LOGGER.info("New TASK {}", externalTask.getVariable("delivery_task").toString());
 
         String processId = externalTask.getProcessInstanceId();
         String taskDefinitionKey = externalTask.getActivityId();
@@ -57,7 +56,7 @@ public class CamundaTaskHandler implements ExternalTaskHandler {
 
             if (existingTask.isPresent()) {
                 if (existingTask.get().getProcessId().equals(task.getProcessId())) {
-                    LOGGER.info("Repeated task from Camunda process: {} - omitting...", task.getProcessId());
+//                    LOGGER.info("Repeated task from Camunda process: {} - omitting...", task.getProcessId());
                 }
             } else {
                 camundaRepo.save(task);
