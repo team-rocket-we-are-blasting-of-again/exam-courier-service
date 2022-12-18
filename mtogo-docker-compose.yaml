@@ -196,7 +196,7 @@ services:
       - customer-postgres
       - camunda
       - gateway
-    image : tobiaszimmer/exam-customer-service:kafka_fail-1.0.8-RELEASE
+    image : tobiaszimmer/exam-customer-service:kafka_fail-1.0.9-RELEASE
     environment:
       SERVER_PORT: "8012"
       CAMUNDA_ENGINE_REST: "http://camunda:8080/engine-rest/"
