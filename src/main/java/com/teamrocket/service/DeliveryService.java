@@ -77,8 +77,9 @@ public class DeliveryService implements IDeliveryService {
 
     @Override
     public DeliveryTask saveAndPublishNewDeliveryTask(DeliveryTask deliveryTask) {
-        LOGGER.info(" Delivery task to be published: {}", deliveryTask);
+
         deliveryTask = saveNewDelivery(deliveryTask);
+        LOGGER.info(" Delivery task to be published: {}", deliveryTask);
         sendNewDeliveryTasksToArea(deliveryTask.getAreaId());
         LOGGER.info("Delivery task sent to websocket {}", deliveryTask);
         return deliveryTask;

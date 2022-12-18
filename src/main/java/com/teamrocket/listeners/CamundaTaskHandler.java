@@ -60,10 +60,11 @@ public class CamundaTaskHandler implements ExternalTaskHandler {
             } else {
                 camundaRepo.save(task);
                 LOGGER.info("New DELIVERY_TASK {}", deliveryTask);
+                deliveryTask.setAreaId("CPH");
                 deliveryTask = deliveryService.saveAndPublishNewDeliveryTask(deliveryTask);
             }
-
             LOGGER.info("TASK {} ready to by claimed", deliveryTask);
+
         } catch (JsonSyntaxException e) {
             String reason = new StringBuilder("Could not deserialize delivery_task ")
                     .append(delStr)
