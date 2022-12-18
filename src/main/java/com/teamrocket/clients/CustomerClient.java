@@ -2,8 +2,8 @@ package com.teamrocket.clients;
 
 import com.teamrocket.model.CustomerDeliveryData;
 import com.teamrocket.proto.CustomerServiceGrpc;
-import com.teamrocket.proto.DeliveryData;
-import com.teamrocket.proto.SystemOrderId;
+import com.teamrocket.proto.DeliveryDataResponse;
+import com.teamrocket.proto.SystemOrderIdRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ public class CustomerClient {
 
         LOGGER.info("CustomerDataProcess started for systemOrderId {}", orderId);
 
-        DeliveryData grpcResponse = customerServiceBlockingStub.getDeliveryData(
-                SystemOrderId.
+        DeliveryDataResponse grpcResponse = customerServiceBlockingStub.getDeliveryData(
+                SystemOrderIdRequest.
                         newBuilder().
-                        setSystemOrderId(orderId).
+                        setSystemOrderIdRequest(orderId).
                         build());
 
         CustomerDeliveryData response = new CustomerDeliveryData(grpcResponse);
