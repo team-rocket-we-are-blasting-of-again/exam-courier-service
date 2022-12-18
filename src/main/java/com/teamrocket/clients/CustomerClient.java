@@ -23,7 +23,7 @@ public class CustomerClient {
         DeliveryDataResponse grpcResponse = customerServiceBlockingStub.getDeliveryData(
                 SystemOrderIdRequest.
                         newBuilder().
-                        setSystemOrderIdRequest(orderId).
+                        setSystemOrderId(orderId).
                         build());
 
         CustomerDeliveryData response = new CustomerDeliveryData(grpcResponse);
