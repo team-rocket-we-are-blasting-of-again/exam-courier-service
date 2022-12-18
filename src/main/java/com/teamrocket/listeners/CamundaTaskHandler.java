@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.teamrocket.entity.CamundaOrderTask;
 import com.teamrocket.enums.Topic;
-import com.teamrocket.model.kafka.OrderCancelled;
 import com.teamrocket.model.camunda.DeliveryTask;
+import com.teamrocket.model.kafka.OrderCancelled;
 import com.teamrocket.repository.CamundaRepo;
 import com.teamrocket.service.DeliveryService;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +56,6 @@ public class CamundaTaskHandler implements ExternalTaskHandler {
 
             if (existingTask.isPresent()) {
                 if (existingTask.get().getProcessId().equals(task.getProcessId())) {
-//                    LOGGER.info("Repeated task from Camunda process: {} - omitting...", task.getProcessId());
                 }
             } else {
                 camundaRepo.save(task);
