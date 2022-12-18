@@ -1,6 +1,6 @@
 package com.teamrocket.model;
 
-import com.teamrocket.proto.DeliveryData;
+import com.teamrocket.proto.DeliveryDataResponse;
 import lombok.*;
 
 @Getter
@@ -14,7 +14,7 @@ public class CustomerDeliveryData {
     private String customerPhone;
     private int dropOfAddressId;
 
-    public CustomerDeliveryData(DeliveryData response) {
+    public CustomerDeliveryData(DeliveryDataResponse response) {
         this.customerName = response.getCustomerName();
         this.customerPhone = response.getCustomerPhone();
         this.dropOfAddressId = response.getDropOfAddressId();
